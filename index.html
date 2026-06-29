@@ -306,7 +306,27 @@
     .steps {
       display: flex;
       flex-direction: column;
-      gap: 0
+      gap: 0;
+      position: relative;
+    }
+
+    .steps-progress-bg {
+      position: absolute;
+      left: 20px;
+      width: 3px;
+      background: var(--border);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .steps-progress-fill {
+      position: absolute;
+      left: 20px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--indigo-lt), var(--indigo));
+      transform: translateX(-50%);
+      z-index: 2;
+      transition: height 0.05s ease;
     }
 
     .step {
@@ -326,7 +346,7 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: var(--indigo-dim);
+      background: var(--bg);
       border: 1px solid rgba(29, 78, 216, 0.3);
       display: flex;
       align-items: center;
@@ -335,6 +355,8 @@
       font-size: 14px;
       font-weight: 800;
       color: var(--indigo-lt);
+      position: relative;
+      z-index: 3;
     }
 
     .step-body h3 {
@@ -883,6 +905,8 @@
       </div>
 
       <div class="steps">
+        <div class="steps-progress-bg" id="stepsProgressBg"></div>
+        <div class="steps-progress-fill" id="stepsProgressFill"></div>
 
         <div class="step">
           <div class="step-num">1</div>
@@ -1849,19 +1873,19 @@
 
         <div class="results-slider-track" id="resultsSliderTrack">
           <div class="results-slide">
-            <img src="founderstory.webp" alt="Founder Story Post" />
+            <img src="spider.webp" alt="Spider Post" />
           </div>
           <div class="results-slide">
-            <img src="claude.webp" alt="Claude AI Post" />
+            <img src="mrbean.webp" alt="Mr Bean Post" />
+          </div>
+          <div class="results-slide">
+            <img src="founderstory.webp" alt="Founder Story Post" />
           </div>
           <div class="results-slide">
             <img src="linkedin claude.webp" alt="LinkedIn Claude Post" />
           </div>
           <div class="results-slide">
-            <img src="spider.webp" alt="Spider post" />
-          </div>
-          <div class="results-slide">
-            <img src="mrbean.webp" alt="Mr Bean Post" />
+            <img src="claude.webp" alt="Claude AI Post" />
           </div>
           <div class="results-slide">
             <img src="meme.webp" alt="Meme Post" />
@@ -1884,7 +1908,7 @@
           const track = document.getElementById('resultsSliderTrack');
           const dots = document.querySelectorAll('.slider-dot');
           const totalSlides = 6;
-          let autoSlideInterval;
+          let autoSlideTimeout;
 
           function updateSlider(idx) {
             currentIdx = (idx + totalSlides) % totalSlides;
@@ -1909,13 +1933,15 @@
           };
 
           function startTimer() {
-            autoSlideInterval = setInterval(() => {
+            let delay = currentIdx === 0 ? 3000 : 2000;
+            autoSlideTimeout = setTimeout(() => {
               updateSlider(currentIdx + 1);
-            }, 2000);
+              startTimer();
+            }, delay);
           }
 
           function resetTimer() {
-            clearInterval(autoSlideInterval);
+            clearTimeout(autoSlideTimeout);
             startTimer();
           }
 
@@ -2021,6 +2047,65 @@
 
 
   <script>
+    function updateStepsProgress() {
+      const stepsContainer = document.querySelector('.steps');
+      if (!stepsContainer) return;
+
+      const steps = document.querySelectorAll('.steps .step');
+      if (steps.length === 0) return;
+
+      const firstStep = steps[0];
+      const lastStep = steps[steps.length - 1];
+
+      const firstNum = firstStep.querySelector('.step-num');
+      const lastNum = lastStep.querySelector('.step-num');
+
+      if (!firstNum || !lastNum) return;
+
+      const containerRect = stepsContainer.getBoundingClientRect();
+      const firstRect = firstNum.getBoundingClientRect();
+      const lastRect = lastNum.getBoundingClientRect();
+
+      const topOffset = (firstRect.top + firstRect.height / 2) - containerRect.top;
+      const totalHeight = (lastRect.top + lastRect.height / 2) - (firstRect.top + firstRect.height / 2);
+
+      const bgLine = document.getElementById('stepsProgressBg');
+      const fillLine = document.getElementById('stepsProgressFill');
+      
+      if (bgLine) {
+        bgLine.style.top = `${topOffset}px`;
+        bgLine.style.height = `${totalHeight}px`;
+      }
+      if (fillLine) {
+        fillLine.style.top = `${topOffset}px`;
+        fillLine.style.maxHeight = `${totalHeight}px`;
+      }
+
+      const triggerY = window.innerHeight / 2;
+      const firstCenterY = firstRect.top + firstRect.height / 2;
+      const lastCenterY = lastRect.top + lastRect.height / 2;
+
+      let fraction = 0;
+      if (triggerY >= firstCenterY) {
+        if (triggerY >= lastCenterY) {
+          fraction = 1;
+        } else {
+          fraction = (triggerY - firstCenterY) / (lastCenterY - firstCenterY);
+        }
+      }
+
+      if (fillLine) {
+        fillLine.style.height = `${fraction * totalHeight}px`;
+      }
+    }
+
+    window.updateStepsProgress = updateStepsProgress;
+
+    window.addEventListener('scroll', updateStepsProgress);
+    window.addEventListener('resize', updateStepsProgress);
+    window.addEventListener('load', updateStepsProgress);
+    document.addEventListener('DOMContentLoaded', updateStepsProgress);
+
     function showPage(id, clickedBtn) {
       // hide all pages
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2032,6 +2117,9 @@
       if (clickedBtn) clickedBtn.classList.add('active');
       // scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // recalculate progress line since layout might change when showing/hiding pages
+      setTimeout(updateStepsProgress, 50);
     }
   </script>
 </body>
