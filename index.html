@@ -2118,13 +2118,28 @@
       // show target page
       document.getElementById('page-' + id).classList.add('active');
       // activate correct nav button
-      if (clickedBtn) clickedBtn.classList.add('active');
+      if (clickedBtn) {
+        clickedBtn.classList.add('active');
+      } else {
+        const btn = document.querySelector(`.nav-btn[onclick*="'${id}'"]`);
+        if (btn) btn.classList.add('active');
+      }
+      // update URL without scrolling
+      window.history.pushState(null, '', '#' + id);
       // scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
       // recalculate progress line since layout might change when showing/hiding pages
       setTimeout(updateStepsProgress, 50);
     }
+
+    // Load correct page if URL has a hash (e.g. #pricing)
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash && document.getElementById('page-' + hash)) {
+        showPage(hash, null);
+      }
+    });
   </script>
 </body>
 
