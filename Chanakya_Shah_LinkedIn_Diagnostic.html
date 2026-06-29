@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Diagnostic Report — Chanakya Shah</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap');
+
+    :root {
+      --navy: #0A1628;
+      --blue: #206cc3;
+      --lblue: #E3EEFF;
+      --gold: #F5A623;
+      --green: #27AE60;
+      --red: #E53935;
+      --orange: #F39C12;
+      --dark: #1C2B3A;
+      --mid: #546E7A;
+      --lite: #ECEFF1;
+      --cream: #F8FAFC;
+      --white: #FFFFFF;
+      --score-color: #E53935;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #F0F4FA;
+      color: var(--dark);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── SIDEBAR NAV ── */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      overflow-y: auto;
+      border-right: 3px solid var(--gold);
+    }
+
+    .sidebar-brand {
+      padding: 20px 16px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-brand h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-brand p {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .sidebar-score {
+      margin: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid rgba(245, 166, 35, 0.3);
+    }
+
+    .sidebar-score .big-score {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .sidebar-score .score-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-section {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-section-label {
+      font-size: 9px;
+      color: rgba(255, 255, 255, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 16px 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 500;
+      transition: all 0.18s;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.06);
+      border-left-color: var(--gold);
+    }
+
+    .nav-score-badge {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-score-badge.red {
+      background: rgba(229, 57, 53, 0.3);
+      color: #EF9A9A;
+    }
+
+    .nav-score-badge.orange {
+      background: rgba(243, 156, 18, 0.3);
+      color: #FFCC80;
+    }
+
+    .nav-score-badge.green {
+      background: rgba(39, 174, 96, 0.3);
+      color: #A5D6A7;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+
+    /* ── HERO / COVER ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0D2140 60%, #163A6B 100%);
+      padding: 60px 48px 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: 40%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(21, 101, 192, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 42px;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 32px;
+      max-width: 560px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 700px;
+      margin-bottom: 32px;
+    }
+
+    .hero-metric {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .hero-metric .val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .hero-metric .lbl {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .hero-score-ring {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      height: 170px;
+    }
+
+    .hero-score-ring svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .score-ring-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-ring-num {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .score-ring-denom {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ── SECTION WRAPPERS ── */
+    .section {
+      padding: 32px 40px;
+      border-bottom: 1px solid #DDE5F0;
+      background: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section-alt {
+      background: var(--cream);
+    }
+
+    .section-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .section-banner-bar {
+      width: 4px;
+      height: 36px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .section-banner-text h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      color: var(--navy);
+      margin-bottom: 2px;
+    }
+
+    .section-banner-text p {
+      font-size: 12px;
+      color: var(--mid);
+    }
+
+    .section-banner-score {
+      margin-left: auto;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    .section-banner-score.red {
+      background: #FFEBEE;
+      color: var(--red);
+    }
+
+    .section-banner-score.orange {
+      background: #FFF8E1;
+      color: var(--orange);
+    }
+
+    .section-banner-score.green {
+      background: #E8F5E9;
+      color: var(--green);
+    }
+
+    /* ── SCORE BAR GRID ── */
+    .score-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--cream);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .score-row-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      min-width: 230px;
+    }
+
+    .score-row-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--lite);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .score-row-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .score-row-val {
+      font-size: 12px;
+      font-weight: 700;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    /* ── KV TABLE ── */
+    .kv-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .kv-table tr:nth-child(odd) td {
+      background: var(--lblue);
+    }
+
+    .kv-table tr:nth-child(even) td {
+      background: var(--white);
+    }
+
+    .kv-table td {
+      padding: 9px 14px;
+      border: 1px solid #DDE5F0;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .kv-table td:first-child {
+      font-weight: 700;
+      color: var(--blue);
+      width: 28%;
+      white-space: nowrap;
+    }
+
+    /* ── DATA TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .data-table thead tr {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .data-table thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table tbody tr:nth-child(odd) {
+      background: var(--cream);
+    }
+
+    .data-table tbody tr:nth-child(even) {
+      background: var(--white);
+    }
+
+    .data-table tbody td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #DDE5F0;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .data-table tbody tr:hover {
+      background: var(--lblue);
+    }
+
+    /* ── RULE CARDS ── */
+    .rule-card {
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      border-left: 4px solid;
+      position: relative;
+    }
+
+    .rule-card.red {
+      background: #FFEBEE;
+      border-color: var(--red);
+    }
+
+    .rule-card.orange {
+      background: #FFF8E1;
+      border-color: var(--orange);
+    }
+
+    .rule-card.green {
+      background: #E8F5E9;
+      border-color: var(--green);
+    }
+
+    .rule-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .rule-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 20px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .rule-badge.red {
+      background: var(--red);
+    }
+
+    .rule-badge.orange {
+      background: var(--orange);
+    }
+
+    .rule-badge.green {
+      background: var(--green);
+    }
+
+    .rule-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      flex: 1;
+    }
+
+    .rule-score {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 6px;
+      color: var(--white);
+      margin-left: auto;
+    }
+
+    .rule-score.red {
+      background: var(--red);
+    }
+
+    .rule-score.orange {
+      background: var(--orange);
+    }
+
+    .rule-score.green {
+      background: var(--green);
+    }
+
+    .status-pill {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      color: var(--white);
+    }
+
+    .status-pill.red {
+      background: var(--red);
+    }
+
+    .status-pill.orange {
+      background: var(--orange);
+    }
+
+    .status-pill.green {
+      background: var(--green);
+    }
+
+    .rule-divider {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.06);
+      margin: 10px 0;
+    }
+
+    .rule-finding,
+    .rule-action {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 12.5px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .rule-finding-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .rule-finding .rule-finding-label {
+      background: var(--lblue);
+      color: var(--blue);
+    }
+
+    .rule-action .rule-finding-label {
+      background: #E8F5E9;
+      color: var(--green);
+    }
+
+    /* ── GAP CARDS ── */
+    .gap-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .gap-card {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #FFF3F3;
+      border: 1px solid #FFCDD2;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .gap-num {
+      width: 32px;
+      height: 32px;
+      background: var(--red);
+      color: var(--white);
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gap-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      color: var(--dark);
+    }
+
+    .gap-card p {
+      font-size: 12px;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+
+    /* ── ACTION CARDS ── */
+    .action-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .action-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border-radius: 10px;
+      padding: 14px;
+      border-left: 4px solid;
+    }
+
+    .action-card.p1 {
+      background: #FFF3F3;
+      border-color: var(--red);
+    }
+
+    .action-card.p2 {
+      background: #FFF8E1;
+      border-color: var(--orange);
+    }
+
+    .action-card.p3 {
+      background: #EFF5FF;
+      border-color: var(--blue);
+    }
+
+    .action-priority {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--white);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .action-card.p1 .action-priority {
+      background: var(--red);
+    }
+
+    .action-card.p2 .action-priority {
+      background: var(--orange);
+    }
+
+    .action-card.p3 .action-priority {
+      background: var(--blue);
+    }
+
+    .action-content {
+      flex: 1;
+    }
+
+    .action-content h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .action-content p {
+      font-size: 12px;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+
+    .action-chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 10px;
+    }
+
+    .chip.impact {
+      background: #E8F5E9;
+      color: var(--green);
+    }
+
+    .chip.effort {
+      background: #FFF8E1;
+      color: var(--orange);
+    }
+
+    .chip.time {
+      background: #EFF5FF;
+      color: var(--blue);
+    }
+
+    /* ── STRENGTH CARDS ── */
+    .strength-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .strength-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: #E8F5E9;
+      border: 1px solid #C8E6C9;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .strength-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 8px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .strength-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .strength-card p {
+      font-size: 12px;
+      color: #2E7D32;
+      line-height: 1.5;
+    }
+
+    /* ── CALENDAR GRID ── */
+    .cal-week {
+      margin-bottom: 20px;
+    }
+
+    .cal-week-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 10px;
+      padding: 6px 0;
+      border-bottom: 2px solid var(--lblue);
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .cal-card {
+      background: var(--white);
+      border: 1px solid #DDE5F0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border-top: 3px solid;
+    }
+
+    .cal-card.mon {
+      border-top-color: var(--blue);
+    }
+
+    .cal-card.wed {
+      border-top-color: var(--green);
+    }
+
+    .cal-card.fri {
+      border-top-color: var(--orange);
+    }
+
+    .cal-day {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--mid);
+      margin-bottom: 4px;
+    }
+
+    .cal-format {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      background: var(--lblue);
+      color: var(--blue);
+    }
+
+    .cal-topic {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .cal-pills {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .cal-pill {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
+    .cal-pill.tofu {
+      background: #E3EEFF;
+      color: var(--blue);
+    }
+
+    .cal-pill.mofu {
+      background: #FFF8E1;
+      color: var(--orange);
+    }
+
+    .cal-pill.bofu {
+      background: #E8F5E9;
+      color: var(--green);
+    }
+
+    .cal-pill.pillar1 {
+      background: #F3E5F5;
+      color: #6A1B9A;
+    }
+
+    .cal-pill.pillar2 {
+      background: #FCE4EC;
+      color: #880E4F;
+    }
+
+    .cal-pill.pillar3 {
+      background: #E0F2F1;
+      color: #004D40;
+    }
+
+    /* ── PROJECTION TABLE ── */
+    .proj-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .proj-table thead th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 10px 14px;
+      text-align: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .proj-table thead th:first-child {
+      text-align: left;
+    }
+
+    .proj-table tbody td {
+      padding: 9px 14px;
+      text-align: center;
+      border-bottom: 1px solid #DDE5F0;
+      font-weight: 500;
+    }
+
+    .proj-table tbody td:first-child {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .proj-table tbody tr:nth-child(odd) {
+      background: var(--cream);
+    }
+
+    .proj-table tbody tr:nth-child(even) {
+      background: var(--white);
+    }
+
+    .proj-table tbody tr:first-child td {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .proj-table tbody tr:first-child td:first-child {
+      color: var(--red);
+    }
+
+    .proj-table .now-col {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .proj-table .best-col {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--cream);
+      border-radius: 8px;
+      padding: 10px 12px;
+      border: 1px solid #DDE5F0;
+    }
+
+    .check-score {
+      font-size: 12px;
+      font-weight: 800;
+      min-width: 32px;
+      text-align: center;
+      padding: 2px 4px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    .check-score.red {
+      background: #FFEBEE;
+      color: var(--red);
+    }
+
+    .check-score.orange {
+      background: #FFF8E1;
+      color: var(--orange);
+    }
+
+    .check-score.green {
+      background: #E8F5E9;
+      color: var(--green);
+    }
+
+    .check-content h5 {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .check-content p {
+      font-size: 11px;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+
+    /* ── VERDICT BOX ── */
+    .verdict-box {
+      background: linear-gradient(135deg, var(--navy) 0%, #163A6B 100%);
+      border-radius: 14px;
+      padding: 28px 32px;
+      color: var(--white);
+      border: 1px solid rgba(245, 166, 35, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .verdict-box::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .verdict-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .verdict-box p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .verdict-highlight {
+      background: rgba(245, 166, 35, 0.15);
+      border-left: 3px solid var(--gold);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* ── FRAMEWORK BANNER ── */
+    .framework-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .framework-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--lblue);
+      color: var(--blue);
+      border: 1px solid rgba(21, 101, 192, 0.2);
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .section {
+        page-break-inside: avoid;
+      }
+
+      body {
+        background: white;
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .hero-score-ring {
+        display: none;
+      }
+
+      .hero-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checklist-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── SCROLL ANIMATION ── */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    [data-animate].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── UTILITY ── */
+    .mt8 {
+      margin-top: 8px;
+    }
+
+    .mt14 {
+      margin-top: 14px;
+    }
+
+    .mt20 {
+      margin-top: 20px;
+    }
+
+    .mb8 {
+      margin-bottom: 8px;
+    }
+
+    .mb14 {
+      margin-bottom: 14px;
+    }
+
+    .label-blue {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .text-mid {
+      color: var(--mid);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .hl-box {
+      background: var(--lblue);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--dark);
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <h2>LinkedIn Diagnostic</h2>
+      <p>Chanakya Shah · June 2026</p>
+    </div>
+    <div class="sidebar-score">
+      <div class="big-score">52</div>
+      <div class="score-label">Overall Score / 100</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Report</div>
+      <a class="nav-item active" href="#overview">📊 Overview</a>
+      <a class="nav-item" href="#summary">📋 Executive Summary</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">19 Rules Audit</div>
+      <a class="nav-item" href="#s1">Rule 1–2 Profile Foundation<span class="nav-score-badge red">14/25</span></a>
+      <a class="nav-item" href="#s2">Rule 3–4 Content Strategy<span class="nav-score-badge red">7/15</span></a>
+      <a class="nav-item" href="#s3">Rule 5–7 Post Quality<span class="nav-score-badge orange">8/15</span></a>
+      <a class="nav-item" href="#s4">Rule 8–9 Content Value<span class="nav-score-badge red">7/15</span></a>
+      <a class="nav-item" href="#s5">Rule 10–13 Algorithm<span class="nav-score-badge orange">8/15</span></a>
+      <a class="nav-item" href="#s6">Rule 14–16 Lead Gen<span class="nav-score-badge red">5/10</span></a>
+      <a class="nav-item" href="#s7">Rule 17–19 Workflow<span class="nav-score-badge orange">3/5</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Frameworks</div>
+      <a class="nav-item" href="#checklist">✅ Donnelly Checklist</a>
+      <a class="nav-item" href="#algorithm">⚡ Algorithm Audit</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Action Plan</div>
+      <a class="nav-item" href="#actions">🎯 90-Day Plan</a>
+      <a class="nav-item" href="#calendar">📅 Content Calendar</a>
+      <a class="nav-item" href="#projection">📈 Score Projection</a>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <!-- HERO -->
+    <div class="hero" id="overview">
+      <div class="hero-tag">LinkedIn Diagnostic Report · 3 Frameworks Applied</div>
+      <h1>Chanakya <span>Shah</span></h1>
+      <p class="hero-sub">Business Finance &amp; Mindset Coach · Founder, Holistique Business Consulting · Fellow of
+        ICAI · South Delhi, India</p>
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <div class="val">52</div>
+          <div class="lbl">Score / 100</div>
+        </div>
+        <div class="hero-metric">
+          <div class="val">1,887</div>
+          <div class="lbl">Followers</div>
+        </div>
+        <div class="hero-metric">
+          <div class="val">500+</div>
+          <div class="lbl">Connections</div>
+        </div>
+        <div class="hero-metric">
+          <div class="val">20+</div>
+          <div class="lbl">Yrs Experience</div>
+        </div>
+      </div>
+      <div class="framework-strip">
+        <span class="framework-pill">🔧 19-Rule Custom Growth System</span>
+        <span class="framework-pill">⚡ Q4 2025 Algorithm Report</span>
+        <span class="framework-pill">✅ Chris Donnelly Content Checklist</span>
+      </div>
+
+      <!-- Score Ring -->
+      <div class="hero-score-ring">
+        <svg viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="68" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"
+            stroke-width="12" />
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#E53935" stroke-width="12" stroke-dasharray="427"
+            stroke-dashoffset="204" stroke-linecap="round" transform="rotate(-90 80 80)"
+            style="transition:stroke-dashoffset 1.5s ease" />
+        </svg>
+        <div class="score-ring-center">
+          <div class="score-ring-num">52</div>
+          <div class="score-ring-denom" style="color:rgba(255,255,255,0.4);font-size:12px">/ 100</div>
+          <div
+            style="font-size:9px;color:#EF9A9A;margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:1px">
+            Needs Work</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="section" id="summary">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Executive Summary</h2>
+          <p>Profile at a glance · Overall assessment · Top 5 critical gaps</p>
+        </div>
+      </div>
+
+      <div class="score-grid mb14" data-animate>
+        <div class="score-row"><span class="score-row-label">Profile Foundation (Rules 1–2)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:56%;background:#E53935"></div>
+          </div><span class="score-row-val" style="color:#E53935">14/25</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Content Pillars &amp; Funnel (Rules 3–4)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:47%;background:#E53935"></div>
+          </div><span class="score-row-val" style="color:#E53935">7/15</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Post Quality &amp; Hooks (Rules 5–7)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:53%;background:#F39C12"></div>
+          </div><span class="score-row-val" style="color:#F39C12">8/15</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Content Value &amp; Authority (Rules 8–9)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:47%;background:#E53935"></div>
+          </div><span class="score-row-val" style="color:#E53935">7/15</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Engagement &amp; Algorithm (Rules 10–13)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:53%;background:#F39C12"></div>
+          </div><span class="score-row-val" style="color:#F39C12">8/15</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Lead Gen &amp; Conversion (Rules 14–16)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:50%;background:#E53935"></div>
+          </div><span class="score-row-val" style="color:#E53935">5/10</span>
+        </div>
+        <div class="score-row"><span class="score-row-label">Workflow &amp; Measurement (Rules 17–19)</span>
+          <div class="score-row-bar">
+            <div class="score-row-fill" style="width:60%;background:#F39C12"></div>
+          </div><span class="score-row-val" style="color:#F39C12">3/5</span>
+        </div>
+      </div>
+
+      <div class="hl-box mt8">
+        Chanakya Shah holds extraordinary credentials — FCA, ICAI Faculty, 20+ years CA experience, a published book,
+        and a Finance Business Intelligence Award from a Canadian Telecom Major. Despite this exceptional foundation,
+        his profile scores <strong>52/100</strong> because execution gaps at every layer prevent those credentials from
+        converting into inbound leads and authority. With structured improvements across all 19 rules, a score of
+        <strong>80+ and 5,000+ followers</strong> is achievable within 90 days.
+      </div>
+
+      <div class="mt20 label-blue">Top 5 Critical Gaps</div>
+      <div class="gap-list" data-animate>
+        <div class="gap-card">
+          <div class="gap-num">1</div>
+          <div>
+            <h4>Headline Has No Audience or Outcome</h4>
+            <p>Three pipe-separated job titles with no mention of WHO is helped or WHAT result they get. Violates Rules
+              1, 2, and 16 of the 19-Rule System.</p>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">2</div>
+          <div>
+            <h4>About Section Is a Corporate CV</h4>
+            <p>Dense 400-word biography with no hook, no story arc, no quantified results, and no CTA. Visitors leave
+              confused, violating Rule 2 (Profile Optimisation).</p>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">3</div>
+          <div>
+            <h4>Featured Section Wastes Conversion Real Estate</h4>
+            <p>Two award certificates displayed instead of lead magnets, booking links, or case studies. Violates Rules
+              2 and 16 (Profile as Conversion Page).</p>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">4</div>
+          <div>
+            <h4>No Content Pillar Discipline</h4>
+            <p>Posts jump from teen finance to GST to personal memories with no connecting strategy. Directly violates
+              Rules 3 (Content Pillars) and 9 (Consistency).</p>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-num">5</div>
+          <div>
+            <h4>Zero Algorithm-Optimised Content Formats</h4>
+            <p>No carousels, no document posts, no cheat sheets. These are the highest-reach formats per the Q4
+              Algorithm Report and Rules 8, 11, and 14.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: PROFILE FOUNDATION -->
+    <div class="section section-alt" id="s1">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 1–2 · Profile Foundation</h2>
+          <p>Positioning statement · Photo · Banner · Headline · About · Featured</p>
+        </div>
+        <div class="section-banner-score red">14 / 25 · Grade D</div>
+      </div>
+
+      <p class="text-mid mb14">Per Rule 1, define your niche before posting anything. Per Rule 2, every profile element
+        must function together as a landing page — instantly communicating who you help, what you do, and how to contact
+        you. Chanakya's profile has strong raw material but fails to assemble it into a coherent conversion system.</p>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 1</span>
+          <h3>Personal Brand Foundation &amp; Positioning</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">4/10</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>No positioning statement exists.
+            Three roles are listed without defining WHO is helped, WHAT outcome they receive, or WHY Chanakya is
+            uniquely qualified over other finance coaches or CAs. The Custom System (Rule 1) demands one clear
+            positioning statement before any other profile element is built.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Create: <em>"I help SME owners and
+              startup founders stop financial bleeding and build consistently profitable businesses — using 20+ years of
+              CA expertise, GST mastery, and business mindset coaching."</em> Post this as the north star for every
+            profile decision.</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 2</span>
+          <h3>Profile Optimisation — Photo, Banner, Headline, About, Featured</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">10/15</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span><strong>Photo:</strong>
+            Professional and clear — good. <strong>Banner:</strong> Has 'Transforming Business as a Profit Catalyst'
+            tagline but workshop photo background reduces brand clarity. <strong>Headline:</strong> Three pipe-separated
+            job titles, zero audience targeting, zero outcome promise. <strong>About:</strong> 400+ word dense biography
+            — no hook, no CTA, no quantified results. <strong>Featured:</strong> Two award certificates shown instead of
+            lead magnets or booking links — zero conversion value.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Rewrite headline: <em>"Helping SME
+              Owners Build Profitable Businesses | CA + Mindset Coach | 20+ Yrs | Book Free Clarity Call."</em>
+            Restructure About using: Hook → Story → Results → Social Proof → CTA. Replace Featured with: Free PDF lead
+            magnet + Booking link + Best testimonial.</span></div>
+      </div>
+
+      <div class="label-blue mt20">Headline Before vs After (Rule 2)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Current</th>
+            <th>Recommended</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Headline</strong></td>
+            <td>Business Finance &amp; Mindset Coach | Founder of Holistique Business Consulting | Fellow of ICAI</td>
+            <td style="color:var(--green);font-weight:600">Helping SME Owners &amp; Startup Founders Build Profitable
+              Businesses | CA + Coach | 20+ Yrs | Book Free Clarity Call</td>
+          </tr>
+          <tr>
+            <td><strong>What's wrong</strong></td>
+            <td style="color:var(--red)">Three roles, zero audience, zero outcome, zero CTA</td>
+            <td style="color:var(--green)">Names audience (SME owners), names outcome (profitable businesses), adds
+              credibility (CA, 20yrs), drives action (Book call)</td>
+          </tr>
+          <tr>
+            <td><strong>About opening</strong></td>
+            <td>"Delivering Customized Solutions to assist in reducing Operating Cost…"</td>
+            <td style="color:var(--green)">"Most SME owners work harder every year — and still can't figure out why
+              profits aren't growing. I've spent 20 years solving exactly that."</td>
+          </tr>
+          <tr>
+            <td><strong>About ending</strong></td>
+            <td>No CTA — visitor has no next step</td>
+            <td style="color:var(--green)">"Book a free 30-min Profit Clarity Call → [Link]"</td>
+          </tr>
+          <tr>
+            <td><strong>Featured slot 1</strong></td>
+            <td>Certificate of Appreciation (award)</td>
+            <td style="color:var(--green)">Free PDF: "5 Hidden Profit Leaks Every SME Owner Must Fix"</td>
+          </tr>
+          <tr>
+            <td><strong>Featured slot 2</strong></td>
+            <td>Finance Business Intelligence Award</td>
+            <td style="color:var(--green)">Booking link: "15-min Free Profit Clarity Call"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2: CONTENT STRATEGY -->
+    <div class="section" id="s2">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 3–4 · Content Strategy</h2>
+          <p>Content pillars · Funnel architecture · Topic consistency</p>
+        </div>
+        <div class="section-banner-score red">7 / 15 · Grade D</div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 3</span>
+          <h3>Define Content Pillars — 3 to 5 Defined Themes</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">3/5</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>No defined pillars. Posts
+            observed span: teen finance tips, book gifting ceremony, profit-vs-revenue correction, tax savings trap,
+            personal reflection. Five completely different territories with no connecting thread. Rule 3 is explicit:
+            "everything should reinforce your positioning."</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Define 3 pillars: (1) Profit &amp;
+            Cash Flow Systems for SME Owners, (2) Business Mindset &amp; Financial Decision-Making, (3) GST &amp; Tax
+            Clarity. Every post maps to one pillar. Eliminate teen finance — wrong audience for a B2B coach.</span>
+        </div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 4</span>
+          <h3>Content Funnel Balance — TOFU / MOFU / BOFU</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">4/10</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>All visible posts are TOFU (tips)
+            or completely off-funnel (personal memories, book gifting). Zero MOFU content (case studies, frameworks,
+            tutorials) as defined in Rule 4. Zero BOFU content (client wins, testimonials, program demonstrations). No
+            conversion path visible anywhere.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Implement 60/30/10 split: 60% TOFU
+            (tips, myths, data) | 30% MOFU (frameworks, case studies, tutorials) | 10% BOFU (client wins, offers,
+            booking CTAs). Minimum 1 BOFU post every 2 weeks. Rule 4 demands all three funnel stages be active
+            simultaneously.</span></div>
+      </div>
+
+      <div class="label-blue mt20">Recommended Content Pillar Architecture</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Pillar</th>
+            <th>Theme</th>
+            <th>Example Post Types</th>
+            <th>Frequency</th>
+            <th>Funnel Stage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pillar 1</strong></td>
+            <td>Profit &amp; Cash Flow Systems</td>
+            <td>Cash flow frameworks, P&L walkthroughs, profit vs revenue myths, cost analysis</td>
+            <td>3× / week</td>
+            <td>TOFU + MOFU</td>
+          </tr>
+          <tr>
+            <td><strong>Pillar 2</strong></td>
+            <td>Business Owner Mindset</td>
+            <td>Money blocks, pricing confidence, delegation, founder decisions</td>
+            <td>1–2× / week</td>
+            <td>TOFU + MOFU</td>
+          </tr>
+          <tr>
+            <td><strong>Pillar 3</strong></td>
+            <td>GST &amp; Tax Clarity</td>
+            <td>Tax myths, SME compliance tips, GST updates, trap avoidance</td>
+            <td>1× / week</td>
+            <td>TOFU</td>
+          </tr>
+          <tr>
+            <td><strong>Monthly</strong></td>
+            <td>Client Case Study</td>
+            <td>Anonymous transformation stories with numbers and specific steps</td>
+            <td>1× / month</td>
+            <td>BOFU / Trust</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 3: POST QUALITY -->
+    <div class="section section-alt" id="s3">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 5–7 · Post Quality &amp; Hooks</h2>
+          <p>Hook writing · Post structure · Readability &amp; formatting</p>
+        </div>
+        <div class="section-banner-score orange">8 / 15 · Grade C</div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 5</span>
+          <h3>Hook Writing Quality</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">3/5</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>"More sales don't automatically
+            mean higher profit" is a solid contrarian hook (Rule 5 example type). "Start young, grow strong" is weak —
+            no curiosity gap or emotion. "Honoured to present my book to…" is a self-focused opener that kills curiosity
+            immediately, violating Rule 5 which says hooks must grab attention, not announce the author.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Apply Rule 5 types to every post.
+            Rotate: Contrarian ("More tax savings = less wealth"), Surprising stat ("87% of SMEs fail within 5 years for
+            one fixable reason"), Curiosity gap ("I've seen 200+ business owners make the same mistake — here it is"),
+            Strong opinion ("Your CA is making you poor and doesn't know it"). Test: would a busy SME owner stop
+            scrolling?</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 6</span>
+          <h3>Post Structure — Hook → Context → Value → Example → Summary → CTA</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">3/5</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>The more-sales post uses numbered
+            points reasonably well but ends with a weak vanity CTA ("comment which point surprised you"). The book post
+            is an unbroken long narrative — no structure. Rule 6 defines 6 clear components: Hook, Context, Value,
+            Example, Summary, CTA — none of the visible posts complete all 6.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Use the Rule 6 framework on every
+            post: Hook (2 lines, curiosity) → Context (2 lines, why this matters) → Value (3–5 actionable points) → Real
+            example (1 story beat from your CA practice) → Summary (1 line lesson) → CTA ("What's your biggest cash flow
+            challenge? Comment below."). Always end with an invitation to respond.</span></div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 7</span>
+          <h3>Readability &amp; Formatting</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">2/5</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Mixed quality: numbered lists in
+            one post (good), dense wall of text in the book post (bad), Hindi phrases inserted mid-English post confuse
+            the primary audience, 20+ hashtags in teen finance post (Rule 7 says "emojis sparingly" and implies minimal
+            hashtags). Rule 7 is explicit: short paragraphs, white space, one sentence per line, bullet points, simple
+            language — none of which is consistently applied.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>One idea per paragraph. Max 2–3
+            lines per paragraph. Choose English OR Hindi — not both in one post. Limit hashtags to 3–5 highly relevant
+            tags only. Use emojis as visual section markers, not random decoration. Run every draft through Rule 7:
+            "Would someone comfortably read this on a phone in 60 seconds?"</span></div>
+      </div>
+
+      <div class="label-blue mt20">Post-by-Post Analysis (All Visible Posts)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Post</th>
+            <th>Hook Quality</th>
+            <th>Structure (Rule 6)</th>
+            <th>Format (Rule 7)</th>
+            <th>Reach Signal</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Book gift to Gopal Krishna Agarwal</strong></td>
+            <td style="color:var(--red)">Low — self-focused opener</td>
+            <td>Narrative, no structure</td>
+            <td>Dense text blocks</td>
+            <td>30 likes, 14 comments</td>
+            <td>Credibility ✓ | Lead gen ✗</td>
+          </tr>
+          <tr>
+            <td><strong>Teen finance tips video</strong></td>
+            <td style="color:var(--orange)">Moderate — "power move"</td>
+            <td>No logical flow</td>
+            <td>20+ hashtags, Hindi mix</td>
+            <td>6 likes, 1 comment</td>
+            <td>Wrong audience — remove from strategy</td>
+          </tr>
+          <tr>
+            <td><strong>More sales ≠ more profit</strong></td>
+            <td style="color:var(--green)">Good — contrarian hook</td>
+            <td>Numbered list works</td>
+            <td>Readable</td>
+            <td>5 likes</td>
+            <td>Best content type — do more of this</td>
+          </tr>
+          <tr>
+            <td><strong>Tax savings trap video</strong></td>
+            <td style="color:var(--green)">Strong — "making you poor"</td>
+            <td>Caption-based format</td>
+            <td>Video hook works</td>
+            <td>4 likes</td>
+            <td>Right format — increase frequency</td>
+          </tr>
+          <tr>
+            <td><strong>Beautiful memories (personal)</strong></td>
+            <td style="color:var(--red)">None — off-brand</td>
+            <td>No structure</td>
+            <td>Photo post</td>
+            <td>Minimal</td>
+            <td>Off-pillar — not aligned to any strategy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 4: CONTENT VALUE -->
+    <div class="section" id="s4">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 8–9 · Content Value &amp; Authority</h2>
+          <p>High-value formats · Frameworks · Checklists · Consistency</p>
+        </div>
+        <div class="section-banner-score red">7 / 15 · Grade D</div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 8</span>
+          <h3>High-Value Content — Frameworks, Checklists, Case Studies, Templates</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">3/8</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 8 lists 8 specific
+            high-value content types: Lessons, Frameworks, Checklists, Mistakes, Case Studies, Templates, Stories, Data.
+            Of these, only "Mistakes" content is visible (the tax savings and profit correction posts). ZERO frameworks,
+            checklists, case studies, templates, or data posts were found. The Q4 Algorithm Report confirms carousels
+            and PDF documents generate highest dwell time and saves.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Create 1 carousel or document per
+            week starting immediately. Start with: "5 Cash Flow Mistakes Killing Your Profit" (cheat sheet), "The Profit
+            Clarity Framework — 3 Steps" (carousel from book), "GST Mistake Buster for SME Owners" (infographic). Your
+            published book is a pre-built content library — mine it systematically.</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 9</span>
+          <h3>Consistency &amp; Posting Frequency</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">4/7</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Most visible posts are 6–7 months
+            old. Most recent post is 6 days old, suggesting a reactive rather than proactive publishing pattern. Rule 9
+            provides a 7-day posting schedule. No evidence of a Monday/Tuesday/Wednesday/etc. content calendar in
+            operation. With 1,887 followers, inconsistency is actively suppressing reach and follower growth.</span>
+        </div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Implement the Rule 9 schedule
+            adapted to Chanakya's pillars: Monday (Client story / mindset), Wednesday (Financial framework / carousel),
+            Friday (GST tip + strong opinion + CTA). Minimum 3 posts per week. Batch-write 2 weeks of content every
+            Sunday. Use LinkedIn's native scheduler. Consistency for 90 days outperforms any single viral post.</span>
+        </div>
+      </div>
+
+      <div class="label-blue mt20">Content Format Priority Matrix (Q4 Algorithm Report + Rule 8)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Format</th>
+            <th>Algorithm Priority</th>
+            <th>Current Usage</th>
+            <th>Rule Reference</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Carousels / PDF Documents</strong></td>
+            <td style="color:var(--green);font-weight:700">HIGHEST</td>
+            <td style="color:var(--red)">None — completely missing</td>
+            <td>Rules 8, 11, 14</td>
+            <td style="color:var(--green);font-weight:600">CREATE NOW — 1 per week</td>
+          </tr>
+          <tr>
+            <td><strong>Native Video (talking head)</strong></td>
+            <td style="color:var(--green)">HIGH</td>
+            <td>Primary format — already doing</td>
+            <td>Rule 8 (Stories)</td>
+            <td>Maintain — increase to 2× / week</td>
+          </tr>
+          <tr>
+            <td><strong>Text posts with strong hook</strong></td>
+            <td>MEDIUM</td>
+            <td>Occasional</td>
+            <td>Rules 5, 6, 7</td>
+            <td>Increase to 2× / week</td>
+          </tr>
+          <tr>
+            <td><strong>External links in post body</strong></td>
+            <td style="color:var(--red);font-weight:700">NEGATIVE SIGNAL</td>
+            <td style="color:var(--red)">Present in some posts</td>
+            <td>Rule 13</td>
+            <td style="color:var(--red);font-weight:600">REMOVE ALL — suppresses reach</td>
+          </tr>
+          <tr>
+            <td><strong>Polls</strong></td>
+            <td>HIGH for engagement</td>
+            <td>None</td>
+            <td>Rule 10</td>
+            <td>Add 1× / month minimum</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 5: ALGORITHM -->
+    <div class="section section-alt" id="s5">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 10–13 · Engagement &amp; Algorithm</h2>
+          <p>Daily engagement · Shareable content · Algorithm signals · Content quality</p>
+        </div>
+        <div class="section-banner-score orange">8 / 15 · Grade C</div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 10</span>
+          <h3>Engagement Strategy — Comments, Replies, Daily Interactions</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">2/5</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>No evidence of systematic daily
+            commenting on other creators' posts. Rule 10 is explicit: "Reply to every comment. Comment on other
+            creators' posts daily. LinkedIn rewards interaction." The 14 comments received on the book post show genuine
+            audience engagement appetite — but zero outbound proactive engagement drives the algorithm to expand
+            reach.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Block 20 minutes every morning.
+            Comment on 5–10 posts in your niche (finance, SME, startup founders). Per Rule 10: minimum 3 thoughtful
+            sentences per comment — genuine insight, not "Great post!" Fire the algorithm by engaging 30 minutes before
+            and 60 minutes after publishing your own content.</span></div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 11</span>
+          <h3>Create Shareable Content — Cheat Sheets, Templates, Visual Guides</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">2/4</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 11 asks: "Would someone save
+            this?" None of the visible posts pass this test. The profit-vs-revenue post has share potential but lacks
+            the designed carousel/infographic format that makes sharing easy. No cheat sheets, frameworks, templates, or
+            step-by-step visual guides found — the 5 highest-shared content types.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Create one save-worthy asset per
+            month: "21 Cash Flow Secrets Cheat Sheet" (from your book), "The 5-Step Profit Clarity Framework", "GST Myth
+            Buster for SME Owners". Always add in the post: "Save this for your next board meeting." Rule 11 drives
+            compounding reach — saved posts show up in new feeds weeks later.</span></div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 13</span>
+          <h3>Algorithm Optimisation — Dwell Time, Saves, No External Links</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">2/3</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 13 lists what the algorithm
+            dislikes: "excessive links" is visible in some posts. Posts are short — low dwell time (favored by
+            algorithm). No save-driving content patterns. The Q4 Algorithm Report confirms dwell time and saves are the
+            top two organic reach signals. Posts also show "low quality AI content" patterns in the teen finance post
+            (generic, no personal angle).</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Never put external links in post
+            body — move all links to first comment. Add curiosity-driven sentence breaks mid-post to slow scroll speed.
+            Drive saves explicitly ("Screenshot this"). Per Rule 12: use AI for brainstorming and editing only — every
+            post must include personal experience, opinion, or story that AI cannot generate.</span></div>
+      </div>
+
+      <div class="label-blue mt20" id="algorithm">Q4 2025 Algorithm Report — Signal Audit</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Algorithm Signal</th>
+            <th>Importance</th>
+            <th>Chanakya's Current Status</th>
+            <th>Rule Reference</th>
+            <th>Action Needed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dwell time (carousels, long posts)</strong></td>
+            <td style="color:var(--green);font-weight:700">VERY HIGH</td>
+            <td style="color:var(--red)">Low — short posts, quick reads</td>
+            <td>Rules 8, 14</td>
+            <td>Create carousels and longer frameworks</td>
+          </tr>
+          <tr>
+            <td><strong>Saves (cheat sheets, templates)</strong></td>
+            <td style="color:var(--green);font-weight:700">VERY HIGH</td>
+            <td style="color:var(--red)">Near zero</td>
+            <td>Rules 11, 14</td>
+            <td>Monthly cheat sheet or document post</td>
+          </tr>
+          <tr>
+            <td><strong>Meaningful comments (3+ sentences)</strong></td>
+            <td style="color:var(--green)">HIGH</td>
+            <td style="color:var(--orange)">Moderate — 14 on one post</td>
+            <td>Rule 10</td>
+            <td>Add debate-driving CTAs to every post</td>
+          </tr>
+          <tr>
+            <td><strong>External links in post body</strong></td>
+            <td style="color:var(--red);font-weight:700">NEGATIVE</td>
+            <td style="color:var(--red)">Present in some posts</td>
+            <td>Rule 13</td>
+            <td>REMOVE ALL — native content only</td>
+          </tr>
+          <tr>
+            <td><strong>Creator-to-creator engagement</strong></td>
+            <td style="color:var(--green)">HIGH</td>
+            <td style="color:var(--red)">Unknown — likely very low</td>
+            <td>Rule 10</td>
+            <td>Daily 20-min commenting routine</td>
+          </tr>
+          <tr>
+            <td><strong>Native video uploaded directly</strong></td>
+            <td style="color:var(--green)">HIGH</td>
+            <td style="color:var(--orange)">Moderate — already doing</td>
+            <td>Rules 8, 9</td>
+            <td>Increase to 2 videos per week</td>
+          </tr>
+          <tr>
+            <td><strong>Reposts / shares by others</strong></td>
+            <td style="color:var(--green)">HIGH</td>
+            <td style="color:var(--red)">Low — 1 repost seen</td>
+            <td>Rule 11</td>
+            <td>Create shareable frameworks and guides</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 6: LEAD GEN -->
+    <div class="section" id="s6">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 14–16 · Lead Generation &amp; Conversion</h2>
+          <p>Carousels · Trust-building · Profile as conversion page</p>
+        </div>
+        <div class="section-banner-score red">5 / 10 · Grade D</div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 14</span>
+          <h3>Carousels, Cheat Sheets &amp; Save-Worthy Formats</h3>
+          <span class="status-pill red">MISSING</span>
+          <span class="rule-score red">1/3</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>No carousels or document-format
+            posts found anywhere. Rule 14 specifies that each carousel slide should have: one idea, minimal text, strong
+            headline, clear visuals, actionable information, and end with a summary. Chanakya's book "21 Cash Flow
+            Secrets" is a pre-built 21-carousel series — none of it has been published in this format.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Create 4 carousels immediately from
+            book content. Structure per Rule 14: Slide 1 = Hook ("21 Cash Flow Secrets — Secret 1"), Slides 2–7 = One
+            secret per slide, minimal text, Final slide = CTA + coaching offer. Make every slide independently valuable
+            so people share individual slides.</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 15</span>
+          <h3>Sell Without Sounding Salesy — Teach First, Build Trust</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">2/4</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 15 says: "Teach first. Build
+            trust. Demonstrate expertise. Share proof. Explain processes. Show outcomes." Some teaching content exists
+            (videos, myth-corrections) but no client case studies, transformation stories, or testimonials. The coaching
+            service is implied but never proven publicly. People buy from experts they trust — and trust requires
+            demonstrated proof, not just claimed expertise.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Share 1 anonymous client case study
+            per month in the Rule 15 format: Situation → What we did (specific steps) → Results achieved (specific
+            numbers) → Lesson for the reader. Example: "A manufacturing owner was losing Rs. 2L/month. Here are the 5
+            cash flow systems we implemented. In 90 days, the loss turned to profit."</span></div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 16</span>
+          <h3>Turn Your Profile Into a Conversion Page</h3>
+          <span class="status-pill red">WEAK</span>
+          <span class="rule-score red">2/3</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 16 says visitors should
+            instantly understand: who you help, what you do, why you're credible, how to contact you, where to learn
+            more. Currently: "who you help" is buried, "how to contact you" requires scrolling through the entire
+            profile, "where to learn more" is non-existent. A profile visitor who wants to work with Chanakya must go
+            looking — this kills conversions entirely.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Per Rule 16, reduce friction at
+            every step: Headline → names audience + CTA. About → ends with "Book free call here: [link]". Featured →
+            free PDF lead magnet as slot 1, booking link as slot 2, best case study as slot 3. Every profile element
+            drives to one action: book the Profit Clarity Call.</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: WORKFLOW -->
+    <div class="section section-alt" id="s7">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Rules 17–19 · Workflow &amp; Measurement</h2>
+          <p>Weekly system · Metrics tracking · Long-term strategy</p>
+        </div>
+        <div class="section-banner-score orange">3 / 5 · Grade C</div>
+      </div>
+
+      <div class="rule-card red" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge red">Rule 17</span>
+          <h3>Weekly Content Workflow System</h3>
+          <span class="status-pill red">MISSING</span>
+          <span class="rule-score red">1/2</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 17 defines 8 weekly steps:
+            research trends → save ideas → write drafts → schedule → publish → engage → analyse → improve. Six-month
+            posting gaps confirm content is created reactively rather than following this workflow. No scheduled posts,
+            no batch writing, no performance review cycle is visible.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Implement Rule 17 every Sunday (30
+            minutes): Review last week's top post. Select 3 topics for the week from your pillar bank. Write all 3
+            drafts. Schedule via LinkedIn scheduler. This single habit, run weekly, will transform consistency within 30
+            days. Motivation is unreliable — a system replaces it.</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 18</span>
+          <h3>Track &amp; Measure — Impressions, Saves, DMs, Leads, Conversions</h3>
+          <span class="status-pill orange">UNKNOWN</span>
+          <span class="rule-score orange">1/2</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 18 is explicit: "Optimize
+            for business outcomes, not vanity metrics." Track impressions, profile visits, follower growth, saves,
+            shares, comments, DMs received, leads generated, conversion rate. Without tracking, the same underperforming
+            content patterns repeat indefinitely. The lack of format diversity and optimisation patterns suggests Rule
+            18 is not being applied.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Build a simple weekly tracking
+            spreadsheet with Rule 18's 8 metrics. Review every Friday. Ask: Which post drove DMs? Which drove profile
+            visits? Optimize for consultation bookings, not likes. A post with 4 likes and 2 consultation DMs is
+            objectively better than 30 likes and 0 leads.</span></div>
+      </div>
+
+      <div class="rule-card orange" data-animate>
+        <div class="rule-card-header">
+          <span class="rule-badge orange">Rule 19</span>
+          <h3>Long-Term Growth — Expertise + Consistency + Relationships</h3>
+          <span class="status-pill orange">PARTIAL</span>
+          <span class="rule-score orange">1/1</span>
+        </div>
+        <div class="rule-divider"></div>
+        <div class="rule-finding"><span class="rule-finding-label">Finding</span><span>Rule 19 identifies 4 compounding
+            activities: publish valuable content, build genuine relationships, establish authority in one niche, stay
+            consistent for months. Strong expertise foundation exists (FCA, ICAI, author) but consistency is low,
+            relationships are not publicly visible, and niche authority is diluted by the teen finance and personal
+            content.</span></div>
+        <div class="rule-action"><span class="rule-finding-label">Action</span><span>Commit to Rule 19's 4 activities
+            over 90 days: Month 1 = Profile overhaul + 3× /week posting. Month 2 = Daily commenting (relationships) +
+            first carousel series (authority). Month 3 = 3 creator collaborations + monthly case study + measure and
+            optimise. The combination compounds over time into LinkedIn's most powerful business development
+            channel.</span></div>
+      </div>
+    </div>
+
+    <!-- CHRIS DONNELLY CHECKLIST -->
+    <div class="section" id="checklist">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Chris Donnelly Content Checklist Audit</h2>
+          <p>9 Pillars · 27 Criteria · Total Score: 12/27 (44%)</p>
+        </div>
+        <div class="section-banner-score red">12 / 27 · 44%</div>
+      </div>
+      <p class="text-mid mb14">The Donnelly Checklist evaluates every post across 9 pillars of content excellence. A
+        score of 12/27 confirms systemic execution gaps — while individual posts show promise, no post consistently
+        passes all 9 pillars simultaneously.</p>
+
+      <div class="checklist-grid" data-animate>
+        <div class="checklist-item"><span class="check-score orange">2/3</span>
+          <div class="check-content">
+            <h5>1. Hook</h5>
+            <p>First 2 lines stop scroll and create curiosity. Some good hooks exist but most are self-focused or
+              generic.</p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score orange">2/3</span>
+          <div class="check-content">
+            <h5>2. Value</h5>
+            <p>Every post teaches or reveals something specific. Some posts add value but several are off-topic or too
+              vague.</p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>3. Story</h5>
+            <p>Personal narrative grounds the content. Almost no personal client stories or specific experiences shared.
+            </p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score orange">2/3</span>
+          <div class="check-content">
+            <h5>4. Credibility</h5>
+            <p>Expertise demonstrated not just claimed. Credentials exist but never surface in the actual content
+              itself.</p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>5. Clarity</h5>
+            <p>Simple language, jargon-free, scannable. Dense paragraphs, Hindi-English mixing, and jargon throughout.
+            </p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>6. Specificity</h5>
+            <p>Concrete numbers, names, timeframes. Advice is consistently too vague — no specific client examples or
+              data.</p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>7. CTA</h5>
+            <p>Clear natural next step drives action. Weak or missing CTAs on most posts — no conversion path created.
+            </p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>8. Format</h5>
+            <p>Optimal format chosen for content type. Carousels and documents entirely absent despite being ideal for
+              this niche.</p>
+          </div>
+        </div>
+        <div class="checklist-item"><span class="check-score red">1/3</span>
+          <div class="check-content">
+            <h5>9. Consistency</h5>
+            <p>Regular publishing on a defined schedule. Six-month posting gaps visible — no publishing calendar in
+              operation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hl-box mt20">
+        <strong>Biggest gap: Pillars 3, 6, 8, 9</strong> — Story, Specificity, Format, and Consistency. Chanakya has the
+        stories (20+ years of client work), the specific results (Finance Business Intelligence Award, 150+ business
+        owners coached), and the book (21 ready-made carousel topics) — none of it is being published in the right
+        formats consistently.
+      </div>
+    </div>
+
+    <!-- ACTION PLAN -->
+    <div class="section section-alt" id="actions">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>90-Day Action Plan</h2>
+          <p>Prioritised by impact · P1 = This Week · P2 = 30 Days · P3 = 60 Days</p>
+        </div>
+      </div>
+
+      <div class="label-blue">Phase 1 — Immediate Profile Wins (Week 1–2)</div>
+      <div class="action-list mb14" data-animate>
+        <div class="action-card p1"><span class="action-priority">P1</span>
+          <div class="action-content">
+            <h4>Rewrite Your Headline</h4>
+            <p>Change to: "Helping SME Owners Build Profitable Businesses | CA + Mindset Coach | 20+ Yrs | Book Free
+              Clarity Call" — names audience, outcome, credibility, and CTA.</p>
+            <div class="action-chips"><span class="chip impact">Impact: +8 pts</span><span class="chip effort">Effort:
+                Low</span><span class="chip time">⏱ 30 mins</span></div>
+          </div>
+        </div>
+        <div class="action-card p1"><span class="action-priority">P1</span>
+          <div class="action-content">
+            <h4>Restructure About Section</h4>
+            <p>Hook → Story (Infosys → entrepreneurship) → Results (# clients, outcomes) → Social proof (ICAI, Canada
+              Award) → CTA with booking link. Max 300 words.</p>
+            <div class="action-chips"><span class="chip impact">Impact: +6 pts</span><span class="chip effort">Effort:
+                Medium</span><span class="chip time">⏱ 2 hours</span></div>
+          </div>
+        </div>
+        <div class="action-card p1"><span class="action-priority">P1</span>
+          <div class="action-content">
+            <h4>Overhaul Featured Section</h4>
+            <p>Remove award certificates. Add: Free "5 Profit Leaks" PDF (Slot 1), Booking link for Clarity Call (Slot
+              2), Best educational post (Slot 3). Zero friction conversion path.</p>
+            <div class="action-chips"><span class="chip impact">Impact: +5 pts</span><span class="chip effort">Effort:
+                Low</span><span class="chip time">⏱ 1 hour</span></div>
+          </div>
+        </div>
+        <div class="action-card p1"><span class="action-priority">P1</span>
+          <div class="action-content">
+            <h4>Define Your 3 Content Pillars</h4>
+            <p>Write down 3 pillars, generate 10 post ideas per pillar. Batch-write first 4 weeks of content this
+              weekend. Eliminate teen finance content entirely.</p>
+            <div class="action-chips"><span class="chip impact">Impact: High</span><span class="chip effort">Effort:
+                Medium</span><span class="chip time">⏱ 4 hours</span></div>
+          </div>
+        </div>
+        <div class="action-card p1"><span class="action-priority">P1</span>
+          <div class="action-content">
+            <h4>Create Your First Carousel Post</h4>
+            <p>Turn book Secrets 1–5 into a 7-slide carousel. Slide 1: Hook. Slides 2–6: One secret per slide, minimal
+              text. Slide 7: CTA. This alone can 3× your weekly reach.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Very High</span><span
+                class="chip effort">Effort: Medium</span><span class="chip time">⏱ 3 hours</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="label-blue">Phase 2 — Growth Engine (Week 3–6)</div>
+      <div class="action-list mb14" data-animate>
+        <div class="action-card p2"><span class="action-priority">P2</span>
+          <div class="action-content">
+            <h4>Launch Daily Commenting Habit</h4>
+            <p>Comment on 5–10 posts daily from SME, startup, and finance creators. Minimum 3 thoughtful sentences.
+              Block 20 minutes every morning before anything else.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Algorithm Activation</span><span
+                class="chip effort">Effort: Low</span><span class="chip time">⏱ Daily</span></div>
+          </div>
+        </div>
+        <div class="action-card p2"><span class="action-priority">P2</span>
+          <div class="action-content">
+            <h4>Implement Weekly 3-Post Schedule</h4>
+            <p>Monday: Framework or tip post | Wednesday: Story or case study | Friday: Opinion or contrarian + CTA. Use
+              LinkedIn's native scheduler. Write on Sundays.</p>
+            <div class="action-chips"><span class="chip impact">Impact: High Consistency</span><span
+                class="chip effort">Effort: Medium</span><span class="chip time">⏱ 4 hrs/week</span></div>
+          </div>
+        </div>
+        <div class="action-card p2"><span class="action-priority">P2</span>
+          <div class="action-content">
+            <h4>Remove All External Links from Post Bodies</h4>
+            <p>Audit all existing posts. Move links to first comment or profile section. Never put external links in the
+              body of any post — this directly suppresses algorithmic distribution.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Immediate Reach Lift</span><span
+                class="chip effort">Effort: Low</span><span class="chip time">⏱ 1 hour</span></div>
+          </div>
+        </div>
+        <div class="action-card p2"><span class="action-priority">P2</span>
+          <div class="action-content">
+            <h4>Publish First Anonymous Client Case Study</h4>
+            <p>"A manufacturing business owner came to me losing Rs. 2L/month. Here are the 5 cash flow systems we
+              implemented. In 90 days, it turned to profit." Include specific steps and numbers.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Very High Trust</span><span
+                class="chip effort">Effort: Medium</span><span class="chip time">⏱ 2 hours</span></div>
+          </div>
+        </div>
+        <div class="action-card p2"><span class="action-priority">P2</span>
+          <div class="action-content">
+            <h4>Create Monthly Lead Magnet</h4>
+            <p>"5 Hidden Profit Leaks Every SME Owner Must Fix" — create as PDF, post natively on LinkedIn as a document
+              post, link in Featured. This is your primary save-driving and lead-gen asset.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Saves + Leads</span><span
+                class="chip effort">Effort: Medium</span><span class="chip time">⏱ 3 hours</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="label-blue">Phase 3 — Authority &amp; Scale (Week 7–12)</div>
+      <div class="action-list" data-animate>
+        <div class="action-card p3"><span class="action-priority">P3</span>
+          <div class="action-content">
+            <h4>Creator Collaboration Content</h4>
+            <p>Reach out to 2 complementary creators (startup lawyers, HR consultants, marketing coaches) for
+              collaboration posts or LinkedIn Live sessions. New audiences see your expertise.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Audience Expansion</span><span
+                class="chip effort">Effort: Medium</span><span class="chip time">⏱ Ongoing</span></div>
+          </div>
+        </div>
+        <div class="action-card p3"><span class="action-priority">P3</span>
+          <div class="action-content">
+            <h4>Launch "CA Secrets" Video Series</h4>
+            <p>60-second weekly videos: "CA Secrets for Business Owners." Film 4 episodes in one session. Publish weekly
+              with strong hook in the caption. Builds personal brand depth.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Brand Authority</span><span
+                class="chip effort">Effort: Low</span><span class="chip time">⏱ 2 hrs/month</span></div>
+          </div>
+        </div>
+        <div class="action-card p3"><span class="action-priority">P3</span>
+          <div class="action-content">
+            <h4>Monthly Metrics Review &amp; Optimisation</h4>
+            <p>Review Rule 18's 8 metrics every month. Double down on top 3 performing formats. Cut anything generating
+              zero business outcomes after 6 weeks. Optimise for consultations booked.</p>
+            <div class="action-chips"><span class="chip impact">Impact: Compound Growth</span><span
+                class="chip effort">Effort: Low</span><span class="chip time">⏱ 1 hr/month</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT CALENDAR -->
+    <div class="section" id="calendar">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>4-Week Content Calendar</h2>
+          <p>Implementation blueprint · 3 posts per week minimum · All 3 pillars active</p>
+        </div>
+      </div>
+
+      <div class="cal-week" data-animate>
+        <div class="cal-week-label">📌 Week 1 — Foundation Posts</div>
+        <div class="cal-grid">
+          <div class="cal-card mon">
+            <div class="cal-day">Monday</div>
+            <div class="cal-format">TEXT POST</div>
+            <div class="cal-topic">5 signs your business is profitable on paper but bleeding cash (and how to fix each
+              one)</div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+          <div class="cal-card wed">
+            <div class="cal-day">Wednesday</div>
+            <div class="cal-format">CAROUSEL</div>
+            <div class="cal-topic">21 Cash Flow Secrets — Part 1: Secrets 1 to 5 (from your book)</div>
+            <div class="cal-pills"><span class="cal-pill mofu">MOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+          <div class="cal-card fri">
+            <div class="cal-day">Friday</div>
+            <div class="cal-format">VIDEO (60 sec)</div>
+            <div class="cal-topic">Why "save tax" advice is destroying your actual wealth — a CA's perspective</div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar3">Pillar 3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cal-week" data-animate>
+        <div class="cal-week-label">📌 Week 2 — Authority Posts</div>
+        <div class="cal-grid">
+          <div class="cal-card mon">
+            <div class="cal-day">Monday</div>
+            <div class="cal-format">STORY POST</div>
+            <div class="cal-topic">I became a CA in 2006. Here is what nobody told me about running a profitable firm —
+              3 hard lessons</div>
+            <div class="cal-pills"><span class="cal-pill mofu">MOFU</span><span class="cal-pill pillar2">Pillar 2</span>
+            </div>
+          </div>
+          <div class="cal-card wed">
+            <div class="cal-day">Wednesday</div>
+            <div class="cal-format">DOCUMENT</div>
+            <div class="cal-topic">The 3-step framework I use to diagnose any business's profit problem in 30 minutes
+              flat</div>
+            <div class="cal-pills"><span class="cal-pill mofu">MOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+          <div class="cal-card fri">
+            <div class="cal-day">Friday</div>
+            <div class="cal-format">POLL</div>
+            <div class="cal-topic">What is your biggest business finance challenge right now? (3 options — results
+              shared next week)</div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cal-week" data-animate>
+        <div class="cal-week-label">📌 Week 3 — Trust Posts</div>
+        <div class="cal-grid">
+          <div class="cal-card mon">
+            <div class="cal-day">Monday</div>
+            <div class="cal-format">CLIENT CASE STUDY</div>
+            <div class="cal-topic">Anonymous case: Manufacturing client losing Rs. 2L/month — the 5 exact changes we
+              made to reverse it</div>
+            <div class="cal-pills"><span class="cal-pill bofu">BOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+          <div class="cal-card wed">
+            <div class="cal-day">Wednesday</div>
+            <div class="cal-format">CAROUSEL</div>
+            <div class="cal-topic">GST Myth Buster: 5 things SME owners believe that are costing them lakhs every year
+            </div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar3">Pillar 3</span>
+            </div>
+          </div>
+          <div class="cal-card fri">
+            <div class="cal-day">Friday</div>
+            <div class="cal-format">VIDEO</div>
+            <div class="cal-topic">The difference between profit and cash flow — most owners confuse these and it costs
+              them everything</div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cal-week" data-animate>
+        <div class="cal-week-label">📌 Week 4 — Conversion Posts</div>
+        <div class="cal-grid">
+          <div class="cal-card mon">
+            <div class="cal-day">Monday</div>
+            <div class="cal-format">OPINION POST</div>
+            <div class="cal-topic">The mindset shift that made my clients 37% more profitable — it has nothing to do
+              with revenue</div>
+            <div class="cal-pills"><span class="cal-pill mofu">MOFU</span><span class="cal-pill pillar2">Pillar 2</span>
+            </div>
+          </div>
+          <div class="cal-card wed">
+            <div class="cal-day">Wednesday</div>
+            <div class="cal-format">DOCUMENT (Lead Magnet)</div>
+            <div class="cal-topic">5 Hidden Profit Leaks Every SME Owner Must Fix — Free Guide launch (primary lead
+              magnet)</div>
+            <div class="cal-pills"><span class="cal-pill bofu">BOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+          <div class="cal-card fri">
+            <div class="cal-day">Friday</div>
+            <div class="cal-format">CONTRARIAN</div>
+            <div class="cal-topic">Most CAs are keeping their clients poor — and they don't even know it. Here is
+              exactly why.</div>
+            <div class="cal-pills"><span class="cal-pill tofu">TOFU</span><span class="cal-pill pillar1">Pillar 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRENGTHS -->
+    <div class="section section-alt">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Strengths to Build On</h2>
+          <p>What Chanakya gets right — assets to leverage immediately</p>
+        </div>
+      </div>
+      <div class="strength-list" data-animate>
+        <div class="strength-card">
+          <div class="strength-icon">🏆</div>
+          <div>
+            <h4>World-Class Credentials</h4>
+            <p>FCA, ICAI Faculty, GST Expert, Finance Business Intelligence Award (Canada Telecom Major), PHD Chamber
+              Member, 20+ years CA experience — extraordinary credibility that most coaches can never claim. Surface
+              these in content 2× per month.</p>
+          </div>
+        </div>
+        <div class="strength-card">
+          <div class="strength-icon">📚</div>
+          <div>
+            <h4>Published Author</h4>
+            <p>"Master 21 Cash Flow Secrets for 5X Growth" is a built-in content library. Every chapter is a post. Every
+              secret is a carousel slide. Every concept is a short video. 21 pre-built content series waiting to be
+              published.</p>
+          </div>
+        </div>
+        <div class="strength-card">
+          <div class="strength-icon">🎥</div>
+          <div>
+            <h4>Natural Video Confidence</h4>
+            <p>Comfortable on camera with clear communication — the talking-head video format works well and should be
+              maintained and increased to 2× weekly. This is the hardest format for most creators to master.</p>
+          </div>
+        </div>
+        <div class="strength-card">
+          <div class="strength-icon">💡</div>
+          <div>
+            <h4>Real Expertise Depth</h4>
+            <p>Posts like "more sales ≠ more profit" show genuine ability to simplify complex finance concepts in one
+              sentence — exactly what LinkedIn's algorithm rewards with expanded reach. Do more of this.</p>
+          </div>
+        </div>
+        <div class="strength-card">
+          <div class="strength-icon">🤝</div>
+          <div>
+            <h4>High-Value Network</h4>
+            <p>Book gift to a BJP National Spokesperson for Economic Affairs shows genuine influential connections.
+              These relationships should be strategically showcased and leveraged for collaboration content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTION -->
+    <div class="section" id="projection">
+      <div class="section-banner">
+        <div class="section-banner-bar"></div>
+        <div class="section-banner-text">
+          <h2>Score Projection &amp; Success Metrics</h2>
+          <p>90-day transformation forecast based on full implementation</p>
+        </div>
+      </div>
+
+      <table class="proj-table" data-animate>
+        <thead>
+          <tr>
+            <th style="text-align:left">Metric</th>
+            <th>Now</th>
+            <th>30 Days</th>
+            <th>60 Days</th>
+            <th class="best-col">90 Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Overall Score</td>
+            <td class="now-col">52/100</td>
+            <td>65/100</td>
+            <td>74/100</td>
+            <td class="best-col">83/100</td>
+          </tr>
+          <tr>
+            <td>Profile Foundation (25)</td>
+            <td class="now-col">14</td>
+            <td>20</td>
+            <td>22</td>
+            <td class="best-col">24</td>
+          </tr>
+          <tr>
+            <td>Content Strategy (15)</td>
+            <td class="now-col">7</td>
+            <td>10</td>
+            <td>12</td>
+            <td class="best-col">13</td>
+          </tr>
+          <tr>
+            <td>Post Quality &amp; Hooks (15)</td>
+            <td class="now-col">8</td>
+            <td>10</td>
+            <td>12</td>
+            <td class="best-col">13</td>
+          </tr>
+          <tr>
+            <td>Content Value (15)</td>
+            <td class="now-col">7</td>
+            <td>10</td>
+            <td>12</td>
+            <td class="best-col">13</td>
+          </tr>
+          <tr>
+            <td>Engagement &amp; Algorithm (15)</td>
+            <td class="now-col">8</td>
+            <td>10</td>
+            <td>11</td>
+            <td class="best-col">12</td>
+          </tr>
+          <tr>
+            <td>Lead Gen &amp; Conversion (10)</td>
+            <td class="now-col">5</td>
+            <td>7</td>
+            <td>8</td>
+            <td class="best-col">9</td>
+          </tr>
+          <tr>
+            <td>Workflow &amp; Metrics (5)</td>
+            <td class="now-col">3</td>
+            <td>4</td>
+            <td>4</td>
+            <td class="best-col">5</td>
+          </tr>
+          <tr>
+            <td>Estimated Followers</td>
+            <td class="now-col">1,887</td>
+            <td>2,500+</td>
+            <td>3,500+</td>
+            <td class="best-col">5,500+</td>
+          </tr>
+          <tr>
+            <td>Profile Views / Week</td>
+            <td class="now-col">Low</td>
+            <td>200+</td>
+            <td>500+</td>
+            <td class="best-col">1,000+</td>
+          </tr>
+          <tr>
+            <td>Consultation DMs / Month</td>
+            <td class="now-col">Unknown</td>
+            <td>3–5</td>
+            <td>8–12</td>
+            <td class="best-col">15–20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VERDICT -->
+    <div class="section section-alt">
+      <div class="verdict-box">
+        <h2>Final Verdict</h2>
+        <p>Chanakya Shah has all the raw ingredients for a top-performing LinkedIn profile: extraordinary credentials,
+          deep expertise, authentic experience, a published book, and real stories to tell. The gap between his current
+          score of <strong>52/100</strong> and his potential of <strong>83+</strong> is almost entirely execution-based
+          — not expertise-based.</p>
+        <div class="verdict-highlight">
+          The single most impactful change: Rewrite the headline to name your audience and the outcome you deliver.
+          Everything else compounds from that one fix.
+        </div>
+        <p>The 90-day plan above is ambitious but achievable with 3–4 focused hours per week. Given the B2B nature of
+          the coaching business, even 2–3 additional consultations per month from LinkedIn would generate exceptional
+          ROI on this time investment. Run the system, measure the results, and optimise relentlessly.</p>
+        <div
+          style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.35);display:flex;gap:20px;flex-wrap:wrap">
+          <span>📐 19-Rule Custom Growth System</span>
+          <span>⚡ Q4 2025 Algorithm Report</span>
+          <span>✅ Chris Donnelly Content Checklist</span>
+          <span>📅 June 23, 2026</span>
+          <span>🔒 Confidential</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <script>
+    // ── Active nav highlighting on scroll ──
+    const sections = document.querySelectorAll('[id]');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navItems.forEach(n => n.classList.remove('active'));
+          const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => observer.observe(s));
+
+    // ── Scroll reveal animation ──
+    const animObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          animObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll('[data-animate]').forEach(el => animObs.observe(el));
+  </script>
+</body>
+
+</html>

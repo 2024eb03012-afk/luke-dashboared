@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Standard Plan — Luke LinkedIn Growth</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231D4ED8'/%3E%3Crect x='5' y='18' width='5' height='9' rx='1.5' fill='white'/%3E%3Crect x='13.5' y='12' width='5' height='15' rx='1.5' fill='white' opacity='.85'/%3E%3Crect x='22' y='6' width='5' height='21' rx='1.5' fill='white' opacity='.65'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface2:#F7F8FA;--border:#E1E5EB;--indigo:#1D4ED8;--indigo-lt:#3B82F6;--indigo-dim:rgba(29,78,216,0.08);--text:#0A0A0A;--muted:#5B6472;--subtle:#98A1AD;--amber:#F59E0B;--green:#22C55E;--sidebar-w:210px}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto}
+.sidebar-logo{padding:18px 18px 14px;font-family:'Lora',serif;font-size:18px;font-weight:700;letter-spacing:-0.02em;border-bottom:1px solid var(--border);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--indigo-lt);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.s-section{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--subtle);padding:14px 18px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 18px;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .15s,color .15s;text-decoration:none}
+.nav-item .ni{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--surface2);flex-shrink:0}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--indigo-dim);color:var(--indigo)}
+.nav-item.active .ni{background:rgba(29,78,216,.15)}
+.nbadge{margin-left:auto;font-size:9px;font-weight:800;padding:2px 6px;border-radius:100px}
+.nb-blue{background:var(--indigo-dim);color:var(--indigo-lt)}
+.s-divider{height:1px;background:var(--border);margin:8px 14px}
+.client-chip{margin:auto 12px 16px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);border-radius:12px;padding:14px}
+.chip-label{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.chip-name{font-size:13px;font-weight:700;color:#fff}
+.chip-plan{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px}
+.saved-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:pulse 2s infinite}
+.main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;gap:14px;flex-shrink:0;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:14px;font-weight:700;margin-right:auto}
+.topbar-title span{color:var(--muted);font-weight:400;font-size:12px;margin-left:6px}
+.tb-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(245,158,11,.1);color:#D97706;border:1px solid rgba(245,158,11,.28)}
+.content{padding:24px 28px;flex:1;overflow-y:auto}
+.plan-hero{text-align:center;padding:28px 20px 20px}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em;background:rgba(245,158,11,.12);color:#D97706;border:1px solid rgba(245,158,11,.28)}
+.plan-hero h1{font-family:'Lora',serif;font-size:32px;font-weight:700;color:var(--text);margin-bottom:8px}
+.plan-hero p{font-size:13.5px;color:var(--muted);max-width:460px;margin:0 auto 18px;line-height:1.6}
+.price-row{display:flex;align-items:baseline;justify-content:center;gap:4px;margin-bottom:4px}
+.price-val{font-size:46px;font-weight:800;color:var(--text);line-height:1}
+.price-cur{font-size:20px;font-weight:700;color:var(--muted);align-self:flex-start;margin-top:7px}
+.price-per{font-size:13px;color:var(--muted);margin-left:4px}
+.price-note{font-size:11px;color:var(--subtle);margin-bottom:20px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#fff;box-shadow:0 8px 24px rgba(245,158,11,.35);transition:all .2s;text-decoration:none}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,158,11,.45)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:20px 0}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:16px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s,transform .2s}
+.feat-card:hover{border-color:#F59E0B;transform:translateY(-2px)}
+.feat-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;background:rgba(245,158,11,.1)}
+.feat-body h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.feat-body p{font-size:11.5px;color:var(--muted);line-height:1.5}
+.compare-box{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:20px}
+.compare-box h2{font-size:13.5px;font-weight:700;margin-bottom:12px}
+.compare-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--surface2);font-size:12.5px}
+.compare-row:last-child{border-bottom:none}
+.chk{color:var(--green);font-size:15px;flex-shrink:0;font-weight:700}
+.xmark{color:#CBD5E1;font-size:15px;flex-shrink:0}
+.compare-label{flex:1;color:var(--text);font-weight:500}
+.compare-note{font-size:10.5px;color:var(--subtle)}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">Luke <div class="logo-dot"></div></div>
+  <div class="s-section">Main</div>
+  <a class="nav-item" href="dashboard.html"><div class="ni">📊</div>Dashboard</a>
+  <a class="nav-item" href="#"><div class="ni">📈</div>Results</a>
+  <a class="nav-item" href="remixed-6f22f399 (3).html" target="_blank"><div class="ni">↗</div>Full Site</a>
+  <div class="s-section">Plans</div>
+  <a class="nav-item active" href="plan-standard.html"><div class="ni">⭐</div>Standard</a>
+  <a class="nav-item" href="plan-pro.html"><div class="ni">🚀</div>Pro <span class="nbadge nb-blue">Popular</span></a>
+  <a class="nav-item" href="plan-custom.html"><div class="ni">🛠</div>Custom</a>
+  <div class="s-divider"></div>
+  <div class="s-section">Clients</div>
+  <a class="nav-item" href="#"><div class="ni">👥</div>0 Clients</a>
+  <div class="client-chip" style="margin-top:auto">
+    <div class="chip-label">Active Account</div>
+    <div class="chip-name">Luke's Dashboard</div>
+    <div class="chip-plan"><span class="saved-dot"></span>Standard Plan</div>
+  </div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Plans <span>/ Standard</span></div>
+    <span class="tb-pill">⭐ Standard</span>
+  </div>
+  <div class="content">
+    <div class="plan-hero">
+      <div class="plan-badge">⭐ Standard Plan</div>
+      <h1>Grow Your LinkedIn Presence</h1>
+      <p>Perfect for professionals getting started — build authority, grow your audience, and attract inbound opportunities consistently.</p>
+      <div class="price-row"><span class="price-cur">£</span><span class="price-val">497</span><span class="price-per">/month</span></div>
+      <div class="price-note">Cancel anytime · No setup fees · Onboarding included</div>
+      <a href="#" class="cta-btn">⭐ Get Started with Standard</a>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon">✍️</div><div class="feat-body"><h3>8 Posts / Month</h3><p>2 posts per week crafted by Luke's team, optimised for reach and engagement on your niche.</p></div></div>
+      <div class="feat-card"><div class="feat-icon">🎯</div><div class="feat-body"><h3>Profile Optimisation</h3><p>Full headline, About section, and Featured rewrite to position you as the go-to expert.</p></div></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-body"><h3>Monthly Analytics Report</h3><p>LinkedIn diagnostic covering impressions, follower growth, and profile views each month.</p></div></div>
+      <div class="feat-card"><div class="feat-icon">💬</div><div class="feat-body"><h3>Comment Strategy</h3><p>Guided commenting playbook to put you in front of your ideal audience every week.</p></div></div>
+      <div class="feat-card"><div class="feat-icon">📞</div><div class="feat-body"><h3>Monthly Strategy Call</h3><p>30-min 1-on-1 with Luke to review progress and plan the next month's direction.</p></div></div>
+      <div class="feat-card"><div class="feat-icon">🔔</div><div class="feat-body"><h3>Slack Support</h3><p>Direct Slack access for questions, ideas, and quick feedback Monday to Friday.</p></div></div>
+    </div>
+    <div class="compare-box">
+      <h2>What's included in Standard</h2>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">8 LinkedIn posts per month</span></div>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">Profile headline &amp; About rewrite</span></div>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">Monthly analytics report</span></div>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">Comment strategy playbook</span></div>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">Monthly 30-min strategy call</span></div>
+      <div class="compare-row"><span class="chk">✓</span><span class="compare-label">Slack support (Mon–Fri)</span></div>
+      <div class="compare-row"><span class="xmark">✗</span><span class="compare-label">DM outreach sequences</span><span class="compare-note">Pro &amp; Custom only</span></div>
+      <div class="compare-row"><span class="xmark">✗</span><span class="compare-label">Newsletter writing</span><span class="compare-note">Pro &amp; Custom only</span></div>
+      <div class="compare-row"><span class="xmark">✗</span><span class="compare-label">Dedicated account manager</span><span class="compare-note">Custom only</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

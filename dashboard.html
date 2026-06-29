@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Luke — LinkedIn Growth Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231D4ED8'/%3E%3Crect x='5' y='18' width='5' height='9' rx='1.5' fill='white'/%3E%3Crect x='13.5' y='12' width='5' height='15' rx='1.5' fill='white' opacity='.85'/%3E%3Crect x='22' y='6' width='5' height='21' rx='1.5' fill='white' opacity='.65'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0F2F7;
+  --surface:#FFFFFF;
+  --surface2:#F7F8FA;
+  --border:#E1E5EB;
+  --indigo:#1D4ED8;
+  --indigo-lt:#3B82F6;
+  --indigo-dim:rgba(29,78,216,0.08);
+  --text:#0A0A0A;
+  --muted:#5B6472;
+  --subtle:#98A1AD;
+  --red:#EF4444;
+  --amber:#F59E0B;
+  --green:#22C55E;
+  --sidebar-w:210px;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex}
+
+/* ══════════════════════════════
+   SIDEBAR NAV
+══════════════════════════════ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;height:100vh;overflow-y:auto;
+}
+.sidebar-logo{
+  padding:18px 18px 14px;
+  font-family:'Lora',serif;font-size:18px;font-weight:700;letter-spacing:-0.02em;
+  border-bottom:1px solid var(--border);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-logo .logo-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--indigo-lt);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.s-section{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--subtle);padding:14px 18px 6px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 18px;font-size:12.5px;font-weight:500;color:var(--muted);
+  cursor:pointer;border:none;background:transparent;width:100%;text-align:left;
+  transition:background .15s,color .15s;text-decoration:none;
+}
+.nav-item .ni{
+  width:28px;height:28px;border-radius:8px;display:flex;
+  align-items:center;justify-content:center;font-size:14px;
+  background:var(--surface2);flex-shrink:0;
+}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--indigo-dim);color:var(--indigo)}
+.nav-item.active .ni{background:rgba(29,78,216,.15)}
+.nav-item .nbadge{
+  margin-left:auto;font-size:9px;font-weight:800;padding:2px 6px;border-radius:100px;
+}
+.nb-red{background:rgba(239,68,68,.15);color:var(--red)}
+.nb-blue{background:var(--indigo-dim);color:var(--indigo-lt)}
+.nb-green{background:rgba(34,197,94,.12);color:#16A34A}
+.s-divider{height:1px;background:var(--border);margin:8px 14px}
+.client-chip{
+  margin:auto 12px 16px;
+  background:linear-gradient(135deg,#1D4ED8,#3B82F6);
+  border-radius:12px;padding:14px;
+}
+.chip-label{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.chip-name{font-size:13px;font-weight:700;color:#fff}
+.chip-plan{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px}
+
+/* ══════════════════════════════
+   MAIN CONTENT
+══════════════════════════════ */
+.main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 24px;height:54px;display:flex;align-items:center;gap:14px;
+  flex-shrink:0;position:sticky;top:0;z-index:10;
+}
+.topbar-title{font-size:14px;font-weight:700;margin-right:auto}
+.topbar-title span{color:var(--muted);font-weight:400;font-size:12px;margin-left:6px}
+.tb-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(34,197,94,.1);color:#16A34A;border:1px solid rgba(34,197,94,.28)}
+.tb-btn{
+  display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;
+  font-size:12px;font-weight:700;cursor:pointer;border:none;
+  background:linear-gradient(135deg,var(--indigo),var(--indigo-lt));color:#fff;
+  transition:opacity .2s;
+}
+.tb-btn:hover{opacity:.85}
+
+.content{padding:20px 22px;flex:1}
+
+/* ── ROW 1 — STAT CARDS ── */
+.row1{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:16px 18px;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;right:-12px;top:-12px;width:60px;height:60px;border-radius:50%;opacity:.07}
+.sc-b::after{background:var(--indigo)}
+.sc-r::after{background:var(--red)}
+.sc-a::after{background:var(--amber)}
+.sc-g::after{background:var(--green)}
+.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtle);margin-bottom:6px}
+.sc-val{font-size:28px;font-weight:800;color:var(--text);line-height:1}
+.sc-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.sc-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;margin-top:6px}
+.sb-neu{background:rgba(245,158,11,.1);color:#D97706}
+.sb-down{background:rgba(239,68,68,.1);color:#DC2626}
+.sb-up{background:rgba(34,197,94,.1);color:#16A34A}
+
+/* ── ROW 2 — CATEGORY + MINI CHART ── */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:18px 20px}
+.panel-hd{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.panel-hd .phbadge{font-size:10px;font-weight:700;background:var(--indigo-dim);color:var(--indigo-lt);padding:2px 8px;border-radius:100px}
+
+/* Category rows */
+.crow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--surface2)}
+.crow:last-child{border-bottom:none}
+.crow-ico{font-size:15px;width:26px;text-align:center;flex-shrink:0}
+.crow-info{flex:1;min-width:0}
+.crow-name{font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:3px}
+.cbar{height:4px;border-radius:100px;background:#E1E5EB;overflow:hidden}
+.cb-fill{height:100%;border-radius:100px}
+.cb-r{background:linear-gradient(90deg,#EF4444,#F87171)}
+.cb-a{background:linear-gradient(90deg,#F59E0B,#FCD34D)}
+.cb-b{background:linear-gradient(90deg,#1D4ED8,#3B82F6)}
+.cb-g{background:linear-gradient(90deg,#22C55E,#4ADE80)}
+.crow-num{font-size:12px;font-weight:800;color:var(--text);flex-shrink:0;width:32px;text-align:right}
+.cstatus{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cs-r{background:var(--red)} .cs-a{background:var(--amber)} .cs-b{background:var(--indigo-lt)} .cs-g{background:var(--green)}
+
+/* Opportunity mini cards */
+.opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opp-mini{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:border-color .2s}
+.opp-mini:hover{border-color:var(--indigo-lt)}
+.om-emoji{font-size:22px;margin-bottom:5px}
+.om-val{font-size:18px;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}
+.om-label{font-size:10.5px;color:var(--muted);line-height:1.4}
+
+/* Saved indicator */
+.saved-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:pulse 2s infinite}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">Luke <div class="logo-dot"></div></div>
+
+  <button class="nav-item" onclick="window.open('remixed-6f22f399 (3).html','_blank')">
+    <div class="ni">↗</div>Full Site
+  </button>
+
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-title">Overview <span>/ LinkedIn Growth Dashboard</span></div>
+    <span class="tb-pill">🟢 Live</span>
+  </div>
+
+  <div class="content">
+
+    <!-- ROW 1 — STAT CARDS -->
+    <div class="row1">
+      <div class="sc sc-b"></div>
+      <div class="sc sc-r"></div>
+      <div class="sc sc-a"></div>
+      <div class="sc sc-g"></div>
+    </div>
+
+    <!-- ROW 2 — PANELS -->
+    <div class="row2">
+      <div class="panel"></div>
+      <div class="panel"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+
+</body>
+</html>
