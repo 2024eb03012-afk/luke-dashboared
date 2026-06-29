@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Diagnostic — Sateesh Dasari</title>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --surface-2: #f9f9f7;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --text-primary: #0f0f0e;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --accent: #1D9E75;
+    --accent-light: #e1f5ee;
+    --accent-dark: #085041;
+    --red: #E24B4A;
+    --red-light: #FCEBEB;
+    --red-dark: #791F1F;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --amber-dark: #633806;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Layout */
+  .page-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* Header bar */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border-strong);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-brand {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .topbar-date {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .card-sm {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Hero cover */
+  .cover {
+    background: linear-gradient(135deg, #0a2a1f 0%, #0f4030 60%, #1D9E75 100%);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    margin-bottom: 1.25rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 40%;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .cover-inner { position: relative; z-index: 1; }
+  .cover-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+  .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .cover-name { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .cover-sub { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .cover-pills {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+  .cover-pill {
+    background: rgba(255,255,255,0.12);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+  }
+  .score-row {
+    display: flex; align-items: center; gap: 2rem;
+  }
+  .score-ring-wrap {
+    position: relative;
+    width: 100px; height: 100px;
+    flex-shrink: 0;
+  }
+  .score-ring-wrap svg { transform: rotate(-90deg); }
+  .score-inner {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .score-num {
+    font-size: 28px; font-weight: 700;
+    line-height: 1; color: #fff;
+  }
+  .score-den { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .score-text { flex: 1; }
+  .score-grade {
+    font-size: 15px; font-weight: 600;
+    color: #7de8c5;
+    margin-bottom: 6px;
+  }
+  .score-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.65;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border-strong);
+  }
+  h2.section-heading {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  /* Dimension grid */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  .dim-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+  }
+  .dim-full { grid-column: 1 / -1; }
+  .dim-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .dim-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .dim-score { font-size: 14px; font-weight: 700; }
+  .bar-track {
+    height: 5px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .dim-note { font-size: 11.5px; color: var(--text-secondary); line-height: 1.55; }
+  .c-red { color: var(--red); }
+  .c-amber { color: var(--amber); }
+  .c-green { color: var(--accent); }
+  .bg-red { background: var(--red); }
+  .bg-amber { background: var(--amber); }
+  .bg-green { background: var(--accent); }
+
+  /* Findings */
+  .finding {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .finding-icon {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .fi-red { background: var(--red-light); color: var(--red-dark); }
+  .fi-amber { background: var(--amber-light); color: var(--amber-dark); }
+  .fi-green { background: var(--accent-light); color: var(--accent-dark); }
+  .finding-body { flex: 1; }
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    letter-spacing: 0.02em;
+  }
+  .badge-red { background: var(--red-light); color: var(--red-dark); }
+  .badge-amber { background: var(--amber-light); color: var(--amber-dark); }
+  .badge-green { background: var(--accent-light); color: var(--accent-dark); }
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .finding-title {
+    font-size: 13px; font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .finding-desc {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Rule list */
+  .rule-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 6px;
+  }
+  .rule-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 26px;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .rule-body { flex: 1; }
+  .rule-title { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+  .rule-detail { font-size: 12px; color: var(--text-secondary); margin-top: 2px; line-height: 1.5; }
+  .rule-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .icon-pass { color: var(--accent); }
+  .icon-fail { color: var(--red); }
+  .icon-partial { color: var(--amber); }
+
+  /* Algo grid */
+  .algo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .algo-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.875rem;
+  }
+  .algo-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .algo-val { font-size: 13px; font-weight: 600; line-height: 1.3; }
+
+  /* Action plan */
+  .action-item {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--border-strong);
+  }
+  .action-item.p1 { border-left-color: var(--red); }
+  .action-item.p2 { border-left-color: var(--amber); }
+  .action-item.p3 { border-left-color: var(--blue); }
+  .action-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .action-priority {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+  .ap1 { background: var(--red-light); color: var(--red-dark); }
+  .ap2 { background: var(--amber-light); color: var(--amber-dark); }
+  .ap3 { background: var(--blue-light); color: var(--blue); }
+  .action-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .action-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* Score projection */
+  .proj-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .proj-table tr {
+    border-bottom: 0.5px solid var(--border);
+  }
+  .proj-table tr:last-child { border-bottom: none; }
+  .proj-table td {
+    padding: 12px 0;
+    font-size: 13px;
+  }
+  .proj-table td:first-child { color: var(--text-secondary); }
+  .proj-table td:last-child {
+    text-align: right;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .proj-bar-wrap {
+    height: 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+    width: 100%;
+  }
+  .proj-bar { height: 100%; border-radius: 3px; }
+
+  /* Checklist summary */
+  .check-summary {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 1rem;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .check-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background: var(--accent-light);
+    border: 0.5px solid rgba(29,158,117,0.3);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .insight-box p {
+    font-size: 12.5px;
+    color: var(--accent-dark);
+    line-height: 1.65;
+  }
+  .warn-box {
+    background: var(--amber-light);
+    border: 0.5px solid rgba(186,117,23,0.3);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-top: 10px;
+  }
+  .warn-box p {
+    font-size: 12.5px;
+    color: var(--amber-dark);
+    line-height: 1.65;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 2rem 0 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 0.5px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .dim-grid { grid-template-columns: 1fr; }
+    .algo-grid { grid-template-columns: 1fr 1fr; }
+    .score-row { flex-direction: column; gap: 1rem; }
+    .cover { padding: 1.5rem; }
+    .topbar { padding: 0.875rem 1.25rem; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .topbar { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">LinkedIn Diagnostic Report</span>
+  <span class="topbar-date">June 29, 2026</span>
+</div>
+
+<div class="page-wrap">
+
+  <!-- COVER / HERO -->
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-row">
+        <div class="avatar">SD</div>
+        <div>
+          <div class="cover-name">Sateesh Dasari</div>
+          <div class="cover-sub">Co-Founder &amp; CEO · Continuum AI · Mumbai, Maharashtra, India</div>
+        </div>
+      </div>
+      <div class="cover-pills">
+        <span class="cover-pill">3,862 followers</span>
+        <span class="cover-pill">500+ connections</span>
+        <span class="cover-pill">LinkedIn Premium</span>
+        <span class="cover-pill">AI Platform Founder</span>
+        <span class="cover-pill">30+ years experience</span>
+      </div>
+      <div class="score-row">
+        <div class="score-ring-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#7de8c5" stroke-width="8"
+              stroke-dasharray="263.9" stroke-dashoffset="121.4" stroke-linecap="round"/>
+          </svg>
+          <div class="score-inner">
+            <div class="score-num">54</div>
+            <div class="score-den">/100</div>
+          </div>
+        </div>
+        <div class="score-text">
+          <div class="score-grade">Developing — Significant Upside Available</div>
+          <div class="score-desc">Strong expertise and credibility signals exist, but the profile and content system have critical structural gaps preventing lead generation and algorithmic reach. Multiple high-impact quick wins available within 7 days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIMENSION SCORES -->
+  <p class="section-title">Dimension scores</p>
+  <div class="dim-grid">
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Profile foundation</span>
+        <span class="dim-score c-amber">6/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-amber" style="width:60%"></div></div>
+      <div class="dim-note">Banner &amp; photo are solid. Headline lists roles only — no outcome for target audience. About is CV-style without a CTA.</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Content strategy</span>
+        <span class="dim-score c-red">4/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-red" style="width:40%"></div></div>
+      <div class="dim-note">No defined content pillars visible. Posts are reactive and unfocused — aviation news, Salesforce ads, hiring, anniversary — no throughline.</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Post quality &amp; hooks</span>
+        <span class="dim-score c-amber">5/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-amber" style="width:50%"></div></div>
+      <div class="dim-note">Best post (anniversary) had a strong story hook. Most posts open weakly or are 3rd-party reposts with no original hook.</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Content value &amp; authority</span>
+        <span class="dim-score c-amber">6/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-amber" style="width:60%"></div></div>
+      <div class="dim-note">Deep domain expertise is evident. Not yet packaged into frameworks, tutorials, or educational content that compounds authority.</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Engagement &amp; algorithm</span>
+        <span class="dim-score c-red">4/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-red" style="width:40%"></div></div>
+      <div class="dim-note">Reposts of external content suppress 360Brew reach. No visible daily commenting cadence. No engagement loop active.</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-head">
+        <span class="dim-name">Lead generation &amp; conversion</span>
+        <span class="dim-score c-red">3/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-red" style="width:30%"></div></div>
+      <div class="dim-note">No lead magnet in Featured. About section has no CTA. No DM trigger post or opt-in mechanism anywhere in the profile.</div>
+    </div>
+    <div class="dim-card dim-full">
+      <div class="dim-head">
+        <span class="dim-name">Workflow &amp; measurement</span>
+        <span class="dim-score c-red">2/10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bg-red" style="width:20%"></div></div>
+      <div class="dim-note">No visible content calendar. Posting is sporadic — most visible posts are 1 year old. No tracking or analytics system evident. Cannot improve without data.</div>
+    </div>
+  </div>
+
+  <!-- CRITICAL FINDINGS -->
+  <p class="section-title">Critical findings</p>
+
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">P1 · Profile</span>
+      <div class="finding-title">Headline is a job title, not a value proposition</div>
+      <div class="finding-desc">Current: "Co-Founder &amp; CEO of Continuum AI, Technopreneur, Strategy, Leadership, Startups." This tells visitors who you are — not who you help or what outcome you deliver. Rule #2 requires: Helping [Audience] achieve [Outcome] using [Method].<br><br><strong>Fix:</strong> "Helping enterprise CTOs eliminate legacy SDLC bottlenecks with agentic AI platforms — Co-Founder &amp; CEO, Continuum AI."</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">P1 · Conversion</span>
+      <div class="finding-title">No lead magnet or CTA anywhere in the profile funnel</div>
+      <div class="finding-desc">The About section ends with "Let's connect if you're working on transformative technologies" — zero conversion architecture. No Featured section lead magnet, no DM trigger, no opt-in. Per Rule #16, every profile visitor should instantly know how to take the next step.<br><br><strong>Fix:</strong> Add Featured item ("Download Continuum AI IP Catalog") and close About with: "DM me 'AI AUDIT' for a 30-min enterprise AI readiness review."</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">P1 · Algorithm</span>
+      <div class="finding-title">Reposting external content destroys 360Brew algorithmic reach</div>
+      <div class="finding-desc">Three of five visible posts are reposts or shares of third-party content (Mint article, Flam ad, Pankit Desai award). The Q4 2025 360Brew algorithm heavily weights original content and discounts reposts as near-zero reach signals. The algorithm now judges posts by meaning and originality, not just engagement volume.<br><br><strong>Fix:</strong> Stop all reposts. Replace with reaction posts — cite one line from the source, then write your own 3-paragraph expert take as original content.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">P1 · Content</span>
+      <div class="finding-title">Zero content pillar discipline — completely unfocused posting</div>
+      <div class="finding-desc">Current visible content spans: company anniversary, aviation crash commentary, Salesforce AR news, job hiring, and Digipin. None of this reinforces a clear niche. Rule #3 requires 3–5 committed themes for 90 days.<br><br><strong>Suggested pillars for Sateesh:</strong> (1) Agentic AI for enterprise, (2) Deep-tech startup building, (3) India's sovereign AI stack, (4) Enterprise digital transformation leadership lessons. Every post must map to one pillar before publishing.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-amber">!</div>
+    <div class="finding-body">
+      <span class="badge badge-amber">P2 · Profile</span>
+      <div class="finding-title">About section is a career CV, not a positioning statement</div>
+      <div class="finding-desc">The About section is well-written but structured as a chronological career biography — it mentions "30 years of cross-functional leadership" before naming who Sateesh helps today. Rule #2 requires: story → specialization → results → social proof → CTA.<br><br><strong>Fix:</strong> Open with the problem Continuum AI solves ("India's enterprises are stuck in a ₹500Cr SDLC trap..."), then pivot to 30-year authority, list the 4 IP products with one-line descriptions, close with a specific CTA.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-amber">!</div>
+    <div class="finding-body">
+      <span class="badge badge-amber">P2 · Format</span>
+      <div class="finding-title">Zero carousel or document posts — lowest-reach format mix active</div>
+      <div class="finding-desc">All visible posts are text-only or reposts. Per the Q4 2025 algorithm report, carousels get 4.0x reach multiplier and infographics get 3.0x. Sateesh's deep expertise (agentic AI, sovereign data, enterprise SDLC) is ideal carousel material.<br><br><strong>Fix:</strong> Publish "5 reasons enterprise AI fails (and how agentic AI fixes them)" as a 7-slide carousel immediately. This single post would outperform a month of current text posts on reach.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-amber">!</div>
+    <div class="finding-body">
+      <span class="badge badge-amber">P2 · Cadence</span>
+      <div class="finding-title">Posting cadence is dangerously inconsistent</div>
+      <div class="finding-desc">Most visible posts are 1 year old — suggesting a long posting gap before the recent anniversary post. The 360Brew algorithm rewards accounts with predictable engagement patterns. Rule #9 and the algorithm report confirm: you cannot grow followers with sporadic posting.<br><br><strong>Fix:</strong> Minimum 3 posts per week. Build a weekly workflow (Rule #17): Monday framework, Wednesday story, Friday opinion. Set up 2-week content queue before going live.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon fi-green">✓</div>
+    <div class="finding-body">
+      <span class="badge badge-green">Strength</span>
+      <div class="finding-title">Deep credibility and a genuinely differentiated product story</div>
+      <div class="finding-desc">30+ years, EVP at Rolta, CPO at Sapio Analytics, Oracle background — and a bootstrapped AI company with 4 proprietary IPs (MidasAI, SynaPulseAI, OmniHolmesAI, Continuum AI Box). This is exceptionally strong authority material that most AI founders cannot match.<br><br>The anniversary post (56 reactions, 11 comments, 4 reposts) proves the audience responds powerfully when Sateesh shares his genuine founder journey. That format needs to become a recurring weekly pillar — not a once-a-year event.</div>
+    </div>
+  </div>
+
+  <!-- 19-RULE AUDIT -->
+  <p class="section-title" style="margin-top:2rem">Custom growth system — 19-rule audit</p>
+
+  <div class="check-summary">
+    <div class="check-item"><div class="check-dot" style="background:var(--accent)"></div> Pass: 1/19</div>
+    <div class="check-item"><div class="check-dot" style="background:var(--amber)"></div> Partial: 7/19</div>
+    <div class="check-item"><div class="check-dot" style="background:var(--red)"></div> Fail: 11/19</div>
+  </div>
+
+  <div class="rule-row">
+    <span class="rule-num">01</span>
+    <div class="rule-body">
+      <div class="rule-title">Personal brand foundation defined</div>
+      <div class="rule-detail">Niche visible (AI/enterprise) but no clear positioning statement. ICP not explicitly defined in profile or content.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">02</span>
+    <div class="rule-body">
+      <div class="rule-title">Profile optimised as landing page</div>
+      <div class="rule-detail">Photo/banner pass. Headline fails (role-only). About fails CTA test. Featured section not visible in screenshots.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">03</span>
+    <div class="rule-body">
+      <div class="rule-title">3–5 content pillars defined and committed</div>
+      <div class="rule-detail">Fail — no visible pillar discipline in current content mix. Topics are scattered across aviation, tech news, company updates, hiring.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">04</span>
+    <div class="rule-body">
+      <div class="rule-title">Content funnel (TOFU / MOFU / BOFU) used</div>
+      <div class="rule-detail">Fail — content is primarily company updates (MOFU at best). No TOFU reach content visible. Zero BOFU conversion content.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">05</span>
+    <div class="rule-body">
+      <div class="rule-title">Strong hooks on every post</div>
+      <div class="rule-detail">Partial — anniversary post had a solid hook ("Today marks..."). "We have multiple engineering opportunities" is weak. Repost headers are not hooks.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">06</span>
+    <div class="rule-body">
+      <div class="rule-title">Post structure: Hook → Context → Value → Example → Summary → CTA</div>
+      <div class="rule-detail">Partial — anniversary post loosely followed structure. Most other posts do not use this framework.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">07</span>
+    <div class="rule-body">
+      <div class="rule-title">Posts easy to read — short paragraphs, white space</div>
+      <div class="rule-detail">Partial — anniversary post uses good formatting. Some posts are large wall-of-text blocks. Algorithm report: posts with 7+ paragraphs perform 74% worse.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">08</span>
+    <div class="rule-body">
+      <div class="rule-title">High-value content types — frameworks, lessons, case studies</div>
+      <div class="rule-detail">Fail — no frameworks, checklists, or tutorials published. Highest-value post is company update (not educational). Education is the #1 viral trigger per algorithm report.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">09</span>
+    <div class="rule-body">
+      <div class="rule-title">Consistent posting schedule (minimum 3x/week)</div>
+      <div class="rule-detail">Fail — visible posts show long gaps. No schedule evident. Inconsistent cadence = 360Brew rank suppression.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">10</span>
+    <div class="rule-body">
+      <div class="rule-title">Maximise engagement — reply to comments, comment on others daily</div>
+      <div class="rule-detail">Unknown — some comments received but no reply trail visible. No evidence of proactive daily commenting on niche posts (top creators: 150+ comments/week).</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">11</span>
+    <div class="rule-body">
+      <div class="rule-title">Shareable content — cheat sheets, frameworks, visual guides</div>
+      <div class="rule-detail">Fail — zero shareable asset format posts visible. Saves are now a major 360Brew ranking signal.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">12</span>
+    <div class="rule-body">
+      <div class="rule-title">AI used correctly — personal voice, experience, opinions added</div>
+      <div class="rule-detail">Pass — posts feel authentically human. Founder voice is present and distinctive. No signs of raw AI output.</div>
+    </div>
+    <span class="rule-icon icon-pass">✓</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">13</span>
+    <div class="rule-body">
+      <div class="rule-title">Optimised for 360Brew — dwell time, saves, original content</div>
+      <div class="rule-detail">Fail — reposts, external link shares, no carousel/document formats. Multiple algorithm penalty triggers are currently active.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">14</span>
+    <div class="rule-body">
+      <div class="rule-title">Carousels and cheat sheets created correctly</div>
+      <div class="rule-detail">Fail — zero carousel or document posts exist. 4x reach multiplier completely unused.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">15</span>
+    <div class="rule-body">
+      <div class="rule-title">Sell without sounding salesy — teach first, build trust</div>
+      <div class="rule-detail">Partial — not pitching aggressively, which is good. But not teaching enough to build the trust layer needed for eventual B2B conversion.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">16</span>
+    <div class="rule-body">
+      <div class="rule-title">Profile is a conversion page — clear next step for every visitor</div>
+      <div class="rule-detail">Fail — no lead magnet, no clear CTA, no Featured section asset visible. Visitors arrive and leave with no action path.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">17</span>
+    <div class="rule-body">
+      <div class="rule-title">Weekly content workflow in place</div>
+      <div class="rule-detail">Fail — no evidence of systematic workflow. Posting is event-driven (milestones only), not scheduled.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">18</span>
+    <div class="rule-body">
+      <div class="rule-title">Measuring success — impressions, DMs, leads tracked weekly</div>
+      <div class="rule-detail">Fail — no tracking system visible. Cannot identify top posts, optimise format, or measure business outcomes without data.</div>
+    </div>
+    <span class="rule-icon icon-fail">✕</span>
+  </div>
+  <div class="rule-row">
+    <span class="rule-num">19</span>
+    <div class="rule-body">
+      <div class="rule-title">Long-term growth: content + relationships + authority + consistency</div>
+      <div class="rule-detail">Partial — authority foundation is strong. Consistency and relationship-building not yet activated as a compounding system.</div>
+    </div>
+    <span class="rule-icon icon-partial">–</span>
+  </div>
+
+  <!-- 360BREW ALGORITHM ASSESSMENT -->
+  <p class="section-title" style="margin-top:2rem">360Brew algorithm assessment</p>
+  <div class="algo-grid">
+    <div class="algo-card">
+      <div class="algo-label">Content originality</div>
+      <div class="algo-val c-red">Low — reposts dominate</div>
+    </div>
+    <div class="algo-card">
+      <div class="algo-label">Format reach multiplier</div>
+      <div class="algo-val c-red">1.0x — text only (minimum)</div>
+    </div>
+    <div class="algo-card">
+      <div class="algo-label">Niche content signal</div>
+      <div class="algo-val c-amber">Weak — scattered topics</div>
+    </div>
+    <div class="algo-card">
+      <div class="algo-label">Profile–content alignment</div>
+      <div class="algo-val c-amber">Partial — AI/tech signal</div>
+    </div>
+    <div class="algo-card">
+      <div class="algo-label">Dwell time optimization</div>
+      <div class="algo-val c-red">Not optimized</div>
+    </div>
+    <div class="algo-card">
+      <div class="algo-label">Engagement quality</div>
+      <div class="algo-val c-amber">Real but low volume</div>
+    </div>
+  </div>
+  <div class="insight-box">
+    <p>Key insight from Q4 2025 State of Algorithm Report (360Brew/Saywhat): Median impressions are down 18% year-over-year. The top 1% of creators get 149x more impressions than average — the gap is format + consistency + educational content. Carousels get 4x reach; infographics 3x. Sateesh's current all-text, repost-heavy mix is trapped at baseline reach. One well-executed educational carousel per week would change the trajectory significantly. Personal stories are the best hooks per the report, and statistics + questions perform strongly as TOFU drivers.</p>
+  </div>
+
+  <!-- CHRIS DONNELLY CHECKLIST GAPS -->
+  <p class="section-title" style="margin-top:2rem">Chris Donnelly content checklist — key gaps</p>
+
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">Positioning</span>
+      <div class="finding-title">No one-line positioning statement written</div>
+      <div class="finding-desc">Checklist Section 1 (Positioning) requires a written positioning statement before any other activity. This is the foundation everything else builds from. Without it, content direction and ICP targeting remain vague.</div>
+    </div>
+  </div>
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">Offer &amp; Funnel</span>
+      <div class="finding-title">No lead magnet or "DM me X" offer post</div>
+      <div class="finding-desc">Checklist Section 6 (Offer &amp; Funnel Alignment) is completely unexecuted. No lead magnet post, no "Here's how I can help" post (recommended every 6 weeks), no testimonial post in past 14 days. The entire bottom of the funnel is missing.</div>
+    </div>
+  </div>
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">Content Types</span>
+      <div class="finding-title">No value carousel with outcome-focused title published</div>
+      <div class="finding-desc">Checklist Section 3 (Content Types) requires at least one carousel with a value-driven title. This is the highest-ROI format currently on LinkedIn. Zero carousels in the visible content history.</div>
+    </div>
+  </div>
+  <div class="finding">
+    <div class="finding-icon fi-red">✕</div>
+    <div class="finding-body">
+      <span class="badge badge-red">Systems</span>
+      <div class="finding-title">No content tracking or performance review system</div>
+      <div class="finding-desc">Checklist Section 8 (Systems) requires a Notion or Google Sheet to track content and results, with a monthly review session. Without this, there is no way to identify top posts, improve systematically, or measure business outcomes.</div>
+    </div>
+  </div>
+  <div class="finding">
+    <div class="finding-icon fi-amber">!</div>
+    <div class="finding-body">
+      <span class="badge badge-amber">Content Types</span>
+      <div class="finding-title">No failure/lesson story post in recent content</div>
+      <div class="finding-desc">Personal stories about failure and lessons learned are the highest-engagement TOFU format. The founder journey of Continuum AI has rich material — the 3-month stealth R&amp;D period, the decision to go bootstrapped, the PMF assessment challenges. These posts build the deepest trust.</div>
+    </div>
+  </div>
+  <div class="finding">
+    <div class="finding-icon fi-amber">!</div>
+    <div class="finding-body">
+      <span class="badge badge-amber">Engagement</span>
+      <div class="finding-title">No daily commenting routine on niche posts</div>
+      <div class="finding-desc">Checklist Section 5 (Engagement Strategy) requires commenting on 5 high-quality relevant posts every day for 7 days as a minimum. Top 1% creators comment 499% more than average (150–165 comments per week). This is the fastest follower growth lever available with zero content creation required.</div>
+    </div>
+  </div>
+
+  <!-- PRIORITISED ACTION PLAN -->
+  <p class="section-title" style="margin-top:2rem">Prioritised action plan</p>
+
+  <div class="action-item p1">
+    <div class="action-head">
+      <span class="action-priority ap1">P1 — Week 1 · Day 1–2</span>
+      <span class="action-title">Rewrite headline &amp; add CTA to About section</span>
+    </div>
+    <div class="action-desc">New headline formula: "Helping enterprise CTOs / GCC leaders eliminate legacy SDLC friction with agentic AI — Co-Founder &amp; CEO, Continuum AI." Restructure About: open with the problem ("India's enterprises are losing months to legacy SDLC..."), then 30-year authority, then 4 IP products with one-liner each, close with: "DM me 'AI AUDIT' for a free 30-min enterprise AI readiness review." This is a 30-minute fix with permanent impact on every profile visit.</div>
+  </div>
+
+  <div class="action-item p1">
+    <div class="action-head">
+      <span class="action-priority ap1">P1 — Week 1 · Day 2–3</span>
+      <span class="action-title">Add IP Catalog as lead magnet in Featured section</span>
+    </div>
+    <div class="action-desc">The IP Catalog PDF already exists — it was mentioned in the anniversary post ("We will be sharing our 1st-year IP Catalog"). Upload it as a Featured item titled: "Free: Continuum AI 2025 IP Catalog — 4 sovereign AI platforms explained." This converts profile visitors into warm leads without any additional content creation. If the PDF needs a landing page, use a simple Typeform or Google Form that captures email before download.</div>
+  </div>
+
+  <div class="action-item p1">
+    <div class="action-head">
+      <span class="action-priority ap1">P1 — Week 1 · Day 3–4</span>
+      <span class="action-title">Stop all reposts — write reaction posts instead</span>
+    </div>
+    <div class="action-desc">When sharing external content (news article, award, product launch), write your own 400-word original post. Structure: "Here's what [company/news] means for India's enterprise AI market:" → cite 1 line from the source → 3 paragraphs of your own expert take → question CTA. This preserves the news hook while keeping content fully original for 360Brew. Immediately delete any queued reposts.</div>
+  </div>
+
+  <div class="action-item p1">
+    <div class="action-head">
+      <span class="action-priority ap1">P1 — Week 1–2</span>
+      <span class="action-title">Define 4 content pillars and build a 4-week calendar</span>
+    </div>
+    <div class="action-desc">Pillars: (1) Agentic AI for enterprise — frameworks, common failures, use cases. (2) Sovereign AI &amp; data privacy in India — policy, tech architecture, government initiatives. (3) Deep-tech startup building — honest founder stories, lessons from Continuum AI's first 18 months. (4) Enterprise digital transformation leadership — lessons from 30 years across Oracle, Deutsche Bank, Rolta. Post 3x/week: Monday = educational/framework, Wednesday = story/behind-scenes, Friday = opinion/contrarian. Write every post idea against a pillar before drafting.</div>
+  </div>
+
+  <div class="action-item p2">
+    <div class="action-head">
+      <span class="action-priority ap2">P2 — Week 2–3</span>
+      <span class="action-title">Publish first carousel: "5 reasons enterprise AI fails"</span>
+    </div>
+    <div class="action-desc">7-slide carousel. Slide 1: bold hook — "5 reasons enterprise AI projects fail (and how agentic AI fixes them)." Slides 2–6: one problem per slide with a 2-line Continuum AI solution — e.g., "Problem: LLM wrappers collapse under production load. Fix: MidasAI eliminates prompt-reliant architecture entirely." Slide 7: "DM me 'AI AUDIT' for a readiness review." This simultaneously demonstrates product authority, drives saves (360Brew's highest ranking signal), and activates the 4x carousel reach multiplier. Design with Canva using brand colours.</div>
+  </div>
+
+  <div class="action-item p2">
+    <div class="action-head">
+      <span class="action-priority ap2">P2 — Week 3</span>
+      <span class="action-title">Publish a deep founder story post</span>
+    </div>
+    <div class="action-desc">The "Today, I took a bold step into the future" post was the highest-performing visible post (61 reactions, 31 comments). That format — honest, personal, milestone-driven — is what resonates most with this audience. Write a follow-up: "What I didn't expect in month 1 of Continuum AI's go-to-market." Hook: "I built enterprise software for 30 years. Nothing prepared me for this." → 3 specific lessons from early GTM → invitation to connect with founders in similar situations. Personal stories are confirmed as the best-performing hook type in the Q4 2025 algorithm report.</div>
+  </div>
+
+  <div class="action-item p2">
+    <div class="action-head">
+      <span class="action-priority ap2">P2 — Week 3–4 (ongoing)</span>
+      <span class="action-title">Start daily commenting — 5 niche posts per day</span>
+    </div>
+    <div class="action-desc">Target accounts: enterprise AI founders, sovereign tech advocates, India startup ecosystem creators, digital transformation consultants. Comment with genuine insight — minimum 3 sentences that add a new perspective, not just agreement. The Q4 2025 report confirms top 1% creators average 150–165 comments per week. Set a 15-minute calendar block each morning. Build a list of 50 target creators in your niche to engage with consistently — this is the fastest follower growth lever that requires zero content creation.</div>
+  </div>
+
+  <div class="action-item p3">
+    <div class="action-head">
+      <span class="action-priority ap3">P3 — Month 2</span>
+      <span class="action-title">Build content tracking system + 90-day BOFU sequence</span>
+    </div>
+    <div class="action-desc">Create a Google Sheet with columns: post date, format (text/carousel/image), hook type, pillar, impressions, comments, saves, DMs generated. Review every Friday — 15 minutes. In month 2, add 1 BOFU post every 3 weeks: a client use case for a Continuum AI product, a "here's how I can help" post outlining the 3 ways to work with you, and a testimonial from a partner or pilot customer if available. This builds the conversion layer systematically without feeling salesy because it follows 6–8 weeks of trust-building TOFU/MOFU content.</div>
+  </div>
+
+  <div class="action-item p3">
+    <div class="action-head">
+      <span class="action-priority ap3">P3 — Month 2–3</span>
+      <span class="action-title">Repurpose top posts into multi-format assets</span>
+    </div>
+    <div class="action-desc">Once a content rhythm is established, repurpose top-performing posts: turn the "5 reasons enterprise AI fails" carousel into a LinkedIn PDF guide with a lead-gen CTA. Convert 3 framework posts into a newsletter issue. Record a 60-second video version of the best story post. Per the Donnelly checklist Section 7 (Multiformat Repurposing), every top post should yield 3+ additional formats. This multiplies reach without requiring new ideas.</div>
+  </div>
+
+  <!-- SCORE PROJECTION -->
+  <p class="section-title" style="margin-top:2rem">Score projection</p>
+  <div class="card-sm">
+    <table class="proj-table">
+      <tr>
+        <td>
+          Current score
+          <div class="proj-bar-wrap"><div class="proj-bar bg-amber" style="width:54%"></div></div>
+        </td>
+        <td class="c-amber">54 / 100</td>
+      </tr>
+      <tr>
+        <td>
+          After P1 fixes — 30 days
+          <div class="proj-bar-wrap"><div class="proj-bar bg-amber" style="width:68%"></div></div>
+        </td>
+        <td class="c-amber">68 / 100</td>
+      </tr>
+      <tr>
+        <td>
+          After P2 activation — 60 days
+          <div class="proj-bar-wrap"><div class="proj-bar bg-green" style="width:76%"></div></div>
+        </td>
+        <td class="c-green">76 / 100</td>
+      </tr>
+      <tr>
+        <td>
+          Full system running — 90 days
+          <div class="proj-bar-wrap"><div class="proj-bar bg-green" style="width:84%"></div></div>
+        </td>
+        <td class="c-green">84 / 100</td>
+      </tr>
+    </table>
+    <div class="warn-box" style="margin-top:12px">
+      <p>The largest single-session gain comes from headline + CTA + Featured fixes (P1, Week 1) — profile-level changes that improve every visitor's experience without requiring new content creation. The biggest reach gain comes from stopping reposts and starting the carousel cadence (P1–P2, Weeks 2–3). Consistency maintained for 90 days is what compounds all gains into follower growth.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>LinkedIn Diagnostic · Sateesh Dasari · Continuum AI · June 29, 2026</p>
+    <p style="margin-top:6px">Framework: Custom LinkedIn Growth System (19 rules) · Q4 2025 State of Algorithm Report (360Brew/Saywhat) · Chris Donnelly Content Checklist</p>
+  </div>
+
+</div>
+</body>
+</html>
