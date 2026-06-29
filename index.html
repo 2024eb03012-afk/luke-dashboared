@@ -1752,6 +1752,173 @@
           every client.</p>
       </div>
 
+      <style>
+        .results-slider-container {
+          position: relative;
+          max-width: 600px;
+          margin: 40px auto;
+          overflow: hidden;
+          border-radius: 16px;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+          background: #fff;
+          border: 1px solid #E1E5EB;
+        }
+        .results-slider-track {
+          display: flex;
+          transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          width: 500%;
+        }
+        .results-slide {
+          width: 20%;
+          flex-shrink: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 24px;
+          background: #F7F8FA;
+        }
+        .results-slide img {
+          max-width: 100%;
+          max-height: 520px;
+          object-fit: contain;
+          border-radius: 12px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          transition: transform 0.3s;
+        }
+        .results-slide img:hover {
+          transform: scale(1.02);
+        }
+        .slider-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 44px;
+          height: 44px;
+          background: rgba(255,255,255,0.9);
+          border-radius: 50%;
+          border: 1px solid #E1E5EB;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          color: #1D4ED8;
+          z-index: 10;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          transition: all 0.2s;
+          backdrop-filter: blur(4px);
+        }
+        .slider-arrow:hover {
+          background: #1D4ED8;
+          color: #fff;
+          border-color: #1D4ED8;
+          transform: translateY(-50%) scale(1.1);
+        }
+        .arrow-left {
+          left: 16px;
+        }
+        .arrow-right {
+          right: 16px;
+        }
+        .slider-dots {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          padding: 16px 0;
+          background: #fff;
+          border-top: 1px solid #E1E5EB;
+        }
+        .slider-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #E1E5EB;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .slider-dot.active {
+          background: #1D4ED8;
+          transform: scale(1.2);
+          width: 24px;
+          border-radius: 4px;
+        }
+      </style>
+
+      <div class="results-slider-container">
+        <button class="slider-arrow arrow-left" onclick="moveResultsSlider(-1)">‹</button>
+        <button class="slider-arrow arrow-right" onclick="moveResultsSlider(1)">›</button>
+
+        <div class="results-slider-track" id="resultsSliderTrack">
+          <div class="results-slide">
+            <img src="founderstory.webp" alt="Founder Story Post" />
+          </div>
+          <div class="results-slide">
+            <img src="claude.webp" alt="Claude AI Post" />
+          </div>
+          <div class="results-slide">
+            <img src="spider.webp" alt="Spider post" />
+          </div>
+          <div class="results-slide">
+            <img src="mrbean.webp" alt="Mr Bean Post" />
+          </div>
+          <div class="results-slide">
+            <img src="meme.webp" alt="Meme Post" />
+          </div>
+        </div>
+
+        <div class="slider-dots">
+          <div class="slider-dot active" onclick="setResultsSlide(0)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(1)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(2)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(3)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(4)"></div>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          let currentIdx = 0;
+          const track = document.getElementById('resultsSliderTrack');
+          const dots = document.querySelectorAll('.slider-dot');
+          const totalSlides = 5;
+          let autoSlideInterval;
+
+          function updateSlider(idx) {
+            currentIdx = (idx + totalSlides) % totalSlides;
+            track.style.transform = `translateX(-${currentIdx * 20}%)`;
+            dots.forEach((dot, i) => {
+              if (i === currentIdx) {
+                dot.classList.add('active');
+              } else {
+                dot.classList.remove('active');
+              }
+            });
+          }
+
+          window.moveResultsSlider = function(dir) {
+            resetTimer();
+            updateSlider(currentIdx + dir);
+          };
+
+          window.setResultsSlide = function(idx) {
+            resetTimer();
+            updateSlider(idx);
+          };
+
+          function startTimer() {
+            autoSlideInterval = setInterval(() => {
+              updateSlider(currentIdx + 1);
+            }, 4000);
+          }
+
+          function resetTimer() {
+            clearInterval(autoSlideInterval);
+            startTimer();
+          }
+
+          startTimer();
+        })();
+      </script>
 
     </div>
     <div class="page-footer">© 2025 LinkedIn Growth Co.</div>
