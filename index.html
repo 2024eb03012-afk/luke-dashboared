@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <style>
     *,
@@ -20,20 +20,23 @@
     }
 
     :root {
-      --bg: #F7F8FA;
-      --surface: #FFFFFF;
-      --surface2: #6c94e4;
-      --border: #E1E5EB;
-      --indigo: #1D4ED8;
-      --indigo-lt: #3B82F6;
-      --indigo-dim: rgba(29, 78, 216, 0.08);
-      --amber: #0A0A0A;
-      --green: #1D4ED8;
-      --rose: #0A0A0A;
-      --text: #0A0A0A;
-      --muted: #5B6472;
-      --subtle: #98A1AD;
-      --glow: rgba(29, 78, 216, 0.18);
+      /* ── Luke Brand System ── */
+      --bg: #F5EEE4;              /* Soft Cream — page background */
+      --surface: #FFFFFF;         /* White surfaces */
+      --surface2: #EDE5D8;        /* Oat Cream tint — cards, tags */
+      --oat: #DCCFBE;             /* Oat Cream — core light tone */
+      --border: rgba(13,27,58,0.13); /* Navy-tinted border */
+      --navy: #0D1B3A;            /* Hero Navy — hero bg, nav */
+      --indigo: #21337F;          /* Deep Cobalt — primary/CTA */
+      --indigo-lt: #4D67B6;       /* Cobalt Mist — accent/hover */
+      --indigo-dim: rgba(33,51,127,0.09); /* Cobalt dim fill */
+      --amber: #21337F;           /* Keep amber var → cobalt */
+      --green: #21337F;           /* Keep green var → cobalt */
+      --rose: #4D67B6;            /* Keep rose var → mist */
+      --text: #0D1B3A;            /* Hero Navy — primary text */
+      --muted: #4a5568;           /* Mid-tone supporting text */
+      --subtle: #B9BCC2;          /* Stone Neutral — subtle text */
+      --glow: rgba(33,51,127,0.20); /* Cobalt glow */
     }
 
     html {
@@ -53,9 +56,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       display: flex;
       align-items: center;
       padding: 0 32px;
@@ -64,17 +66,17 @@
     }
 
     .topnav .logo {
-      font-family: 'Lora', serif;
-      font-weight: 700;
-      font-size: 17px;
-      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: #F5EEE4;
       margin-right: auto;
       white-space: nowrap;
       letter-spacing: -0.02em;
     }
 
     .topnav .logo span {
-      color: var(--indigo-lt)
+      color: var(--oat)
     }
 
     .nav-btn {
@@ -85,21 +87,21 @@
       cursor: pointer;
       border: none;
       background: transparent;
-      color: var(--muted);
+      color: rgba(245,238,228,0.65);
       transition: background .2s, color .2s;
       white-space: nowrap;
       font-family: 'Inter', sans-serif;
     }
 
     .nav-btn:hover {
-      background: var(--surface2);
-      color: var(--text)
+      background: rgba(255,255,255,0.08);
+      color: #F5EEE4;
     }
 
     .nav-btn.active {
-      background: var(--indigo-dim);
-      color: var(--indigo-lt);
-      border: 1px solid rgba(29, 78, 216, 0.25)
+      background: var(--indigo);
+      color: #F5EEE4;
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
     /* ─── PAGES ─── */
@@ -150,7 +152,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(29, 78, 216, 0.15) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(33,51,127,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -158,13 +160,13 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(29, 78, 216, 0.1);
-      border: 1px solid rgba(29, 78, 216, 0.28);
+      background: rgba(33,51,127,0.08);
+      border: 1px solid rgba(33,51,127,0.22);
       border-radius: 100px;
       padding: 5px 14px;
       font-size: 11px;
       font-weight: 700;
-      color: var(--indigo-lt);
+      color: var(--indigo);
       letter-spacing: .1em;
       text-transform: uppercase;
       margin-bottom: 20px;
@@ -174,7 +176,7 @@
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--indigo-lt);
+      background: var(--indigo);
       animation: pulse 2s infinite
     }
 
@@ -191,17 +193,19 @@
     }
 
     .page-hero h1 {
-      font-family: 'Lora', serif;
+      font-family: 'Inter', sans-serif;
       font-size: clamp(28px, 4.5vw, 52px);
-      font-weight: 600;
-      line-height: 1.15;
-      letter-spacing: -.01em;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
       margin-bottom: 18px;
+      color: var(--navy);
     }
 
     .page-hero h1 em {
       font-style: italic;
-      color: var(--amber);
+      font-weight: 800;
+      color: var(--indigo);
     }
 
     .page-hero p {
@@ -239,12 +243,12 @@
 
     .card.glow {
       border-color: var(--indigo);
-      box-shadow: 0 0 0 1px var(--indigo), 0 0 48px var(--glow), 0 16px 48px rgba(0, 0, 0, .10);
+      box-shadow: 0 0 0 1px var(--indigo), 0 0 48px var(--glow), 0 16px 48px rgba(13,27,58,.10);
     }
 
     .card.amber-glow {
-      border-color: var(--amber);
-      box-shadow: 0 0 0 1px rgba(10, 10, 10, .5), 0 0 48px rgba(10, 10, 10, .15);
+      border-color: var(--indigo);
+      box-shadow: 0 0 0 1px rgba(33,51,127,.4), 0 0 48px rgba(33,51,127,.15);
     }
 
     /* ─── FEATURE LIST ─── */
@@ -323,7 +327,7 @@
       position: absolute;
       left: 20px;
       width: 3px;
-      background: linear-gradient(to bottom, var(--indigo-lt), var(--indigo));
+      background: linear-gradient(to bottom, var(--indigo-lt), var(--navy));
       transform: translateX(-50%);
       z-index: 2;
       transition: height 0.05s ease;
@@ -346,15 +350,15 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: var(--bg);
-      border: 1px solid rgba(29, 78, 216, 0.3);
+      background: var(--navy);
+      border: 1px solid rgba(33,51,127,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 800;
-      color: var(--indigo-lt);
+      color: #F5EEE4;
       position: relative;
       z-index: 3;
     }
@@ -381,18 +385,19 @@
     }
 
     .step-body ul li {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 4px 10px;
+      background: rgba(77,103,182,0.1);
+      border: 1px solid rgba(77,103,182,0.28);
+      border-radius: 100px;
+      padding: 4px 12px;
       font-size: 12px;
-      color: #1A1A1A;
+      font-weight: 500;
+      color: #4D67B6;
     }
 
     /* ─── PRICING BLOCK ─── */
     .price-banner {
-      background: linear-gradient(135deg, var(--surface), var(--surface2));
-      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--navy), #16275a);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 16px;
       padding: 36px 40px;
       display: flex;
@@ -411,11 +416,12 @@
     }
 
     .price-banner .p-main {
-      font-family: 'Lora', serif;
+      font-family: 'Inter', sans-serif;
       font-size: 56px;
-      font-weight: 700;
-      letter-spacing: -.01em;
+      font-weight: 800;
+      letter-spacing: -.03em;
       line-height: 1;
+      color: #FFFFFF;
     }
 
     .price-banner .p-main sup {
@@ -426,21 +432,21 @@
     .price-banner .p-main sub {
       font-size: 17px;
       font-weight: 500;
-      color: var(--muted)
+      color: var(--oat);
     }
 
     .price-banner .p-alt {
       font-size: 14px;
-      color: var(--muted);
-      background: rgba(29, 78, 216, 0.1);
-      border: 1px solid rgba(29, 78, 216, 0.25);
+      color: var(--oat);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 8px;
       padding: 8px 14px;
       line-height: 1.5;
     }
 
     .price-banner .p-alt strong {
-      color: var(--green)
+      color: #DCCFBE;
     }
 
     .price-banner .cta-wrap {
@@ -472,30 +478,37 @@
     }
 
     .btn-solid {
-      background: linear-gradient(135deg, var(--indigo), #3B82F6);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(29, 78, 216, .4)
+      background: var(--indigo);
+      color: #F5EEE4;
+      box-shadow: 0 4px 20px rgba(33,51,127,.35);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-solid:hover {
+      background: #192d70;
     }
 
     .btn-outline {
       background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--text)
+      border: 1.5px solid rgba(13,27,58,0.2);
+      color: var(--navy);
     }
 
     .btn-outline:hover {
-      border-color: var(--indigo-lt)
+      border-color: var(--indigo);
+      color: var(--indigo);
     }
 
     .btn-amber {
-      background: linear-gradient(135deg, var(--amber), #000000);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(10, 10, 10, .3)
+      background: var(--indigo);
+      color: #F5EEE4;
+      box-shadow: 0 4px 20px rgba(33,51,127,.35);
+      letter-spacing: 0.01em;
     }
 
     .btn-ghost {
       background: transparent;
-      color: var(--muted);
+      color: rgba(245,238,228,0.7);
       font-size: 13px;
       text-decoration: underline;
       cursor: pointer;
@@ -528,7 +541,7 @@
       font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 700;
-      color: var(--indigo-lt);
+      color: var(--indigo);
       margin-bottom: 14px;
       display: flex;
       align-items: center;
@@ -540,7 +553,7 @@
       height: 28px;
       border-radius: 7px;
       background: var(--indigo-dim);
-      border: 1px solid rgba(29, 78, 216, .25);
+      border: 1px solid rgba(33,51,127,.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -614,13 +627,13 @@
     }
 
     .comp-table tbody tr:hover td {
-      background: rgba(29, 78, 216, .035)
+      background: rgba(33,51,127,.04)
     }
 
     /* ─── AI VOICE HIGHLIGHT ─── */
     .ai-highlight {
-      background: linear-gradient(135deg, #FFFFFF, #F0F2F6);
-      border: 1px solid var(--indigo);
+      background: linear-gradient(135deg, var(--navy), #16275a);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 16px;
       padding: 36px;
       display: flex;
@@ -638,7 +651,7 @@
       top: -40px;
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle, rgba(29, 78, 216, .2), transparent 65%);
+      background: radial-gradient(circle, rgba(77,103,182,.3), transparent 65%);
       pointer-events: none;
     }
 
@@ -647,29 +660,30 @@
       width: 56px;
       height: 56px;
       border-radius: 14px;
-      background: linear-gradient(135deg, var(--indigo), #3B82F6);
+      background: var(--indigo);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 26px;
-      box-shadow: 0 6px 24px rgba(29, 78, 216, .4);
+      box-shadow: 0 6px 24px rgba(33,51,127,.5);
     }
 
     .ai-highlight h3 {
       font-family: 'Inter', sans-serif;
       font-size: 19px;
       font-weight: 700;
-      margin-bottom: 8px
+      margin-bottom: 8px;
+      color: #F5EEE4;
     }
 
     .ai-highlight p {
       font-size: 14px;
-      color: var(--muted);
+      color: var(--oat);
       line-height: 1.7
     }
 
     .ai-highlight p strong {
-      color: var(--indigo-lt)
+      color: #DCCFBE;
     }
 
     /* ─── BADGE ─── */
@@ -686,15 +700,15 @@
     }
 
     .badge-pop {
-      background: linear-gradient(135deg, var(--amber), #000000);
-      color: #fff;
-      box-shadow: 0 2px 10px rgba(10, 10, 10, .4)
+      background: var(--indigo);
+      color: #F5EEE4;
+      box-shadow: 0 2px 10px rgba(33,51,127,.4)
     }
 
     .badge-new {
-      background: rgba(29, 78, 216, .15);
-      border: 1px solid rgba(29, 78, 216, .3);
-      color: var(--green)
+      background: rgba(33,51,127,.12);
+      border: 1px solid rgba(33,51,127,.25);
+      color: var(--indigo)
     }
 
     /* ─── CUSTOM PAGE UNIQUE ─── */
@@ -719,7 +733,7 @@
       height: 40px;
       border-radius: 10px;
       background: var(--indigo-dim);
-      border: 1px solid rgba(29, 78, 216, .2);
+      border: 1px solid rgba(33,51,127,.18);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -807,7 +821,7 @@
 
     .ctype-card .ct-example {
       font-size: 12.5px;
-      color: #1A1A1A;
+      color: var(--navy);
       font-style: italic;
       background: var(--surface2);
       border-left: 2px solid var(--indigo);
@@ -825,9 +839,9 @@
       font-weight: 700;
       letter-spacing: .06em;
       text-transform: uppercase;
-      color: var(--indigo-lt);
-      background: rgba(29, 78, 216, .12);
-      border: 1px solid rgba(29, 78, 216, .25);
+      color: var(--indigo);
+      background: rgba(33,51,127,.1);
+      border: 1px solid rgba(33,51,127,.22);
       padding: 3px 10px;
       border-radius: 100px;
     }
@@ -887,7 +901,7 @@
     <button class="nav-btn active" onclick="showPage('overview',this)">What We Do</button>
     <button class="nav-btn" onclick="showPage('standard',this)">Standard</button>
     <button class="nav-btn" onclick="showPage('pro',this)">Pro</button>
-    <button class="nav-btn" onclick="showPage('custom',this)">Custom</button>
+
     <button class="nav-btn" onclick="showPage('results',this)">Results</button>
     <button class="nav-btn" onclick="showPage('diagnosis',this)">🩺 Diagnosis</button>
   </nav>
@@ -1164,8 +1178,7 @@
           Standard Plan →</button>
         <button class="btn btn-amber" onclick="showPage('pro',document.querySelector('.nav-btn:nth-child(4)'))">See Pro
           Plan →</button>
-        <button class="btn btn-outline" onclick="showPage('custom',document.querySelector('.nav-btn:nth-child(5)'))">See
-          Custom Plan</button>
+
       </div>
 
     </div>
@@ -1188,8 +1201,8 @@
       <!-- Pricing banner -->
       <div class="price-banner">
         <div class="prices">
-          <div class="p-main"><sup>$</sup>220<sub>/mo</sub></div>
-          <div class="p-alt">Commit to 3 months &amp; pay<br /><strong>$600 total</strong> — save $60</div>
+          <div class="p-main"><sup>$</sup>250<sub>/mo</sub></div>
+          <div class="p-alt">Commit to 3 months &amp; pay<br /><strong>$675 total</strong> — save $75</div>
         </div>
         <div class="cta-wrap">
           <button class="btn btn-solid">Get Started with Standard</button>
@@ -1343,7 +1356,7 @@
       </div>
 
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:40px 0 60px">
-        <button class="btn btn-solid">Get Started with Standard — $220/mo</button>
+        <button class="btn btn-solid">Get Started with Standard — $250/mo</button>
         <button class="btn btn-outline" onclick="showPage('pro',document.querySelector('.nav-btn:nth-child(4)'))">See
           Pro Plan instead →</button>
       </div>
@@ -1367,8 +1380,8 @@
 
       <div class="price-banner" style="border-color:var(--indigo);box-shadow:0 0 40px var(--glow)">
         <div class="prices">
-          <div class="p-main" style="color:var(--indigo)"><sup style="color:var(--indigo)">$</sup>350<sub
-              style="color:var(--muted);font-size:17px">/mo</sub></div>
+          <div class="p-main" style="color:#FFFFFF"><sup style="color:#FFFFFF">$</sup>350<sub
+              style="color:var(--oat);font-size:17px">/mo</sub></div>
           <div class="p-alt">Commit to 3 months &amp; pay<br /><strong>$900 total</strong> — save $150</div>
         </div>
         <div class="cta-wrap">
@@ -1431,7 +1444,7 @@
         <ul class="flist">
           <li><svg class="icon-i" viewBox="0 0 16 16" fill="none">
               <path d="M9 1L4 9h5l-2 6 7-9h-5l1-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
-            </svg> Automatically engages with posts in your niche 24/7</li>
+            </svg> Automatically engages with posts in your niche</li>
           <li><svg class="icon-i" viewBox="0 0 16 16" fill="none">
               <path d="M9 1L4 9h5l-2 6 7-9h-5l1-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
             </svg> Increases profile visibility and activity without extra effort from you</li>
@@ -1441,20 +1454,17 @@
         </ul>
       </div>
 
-      <p class="sec-label">Audience Growth System</p>
+      <p class="sec-label">ICP Leads List</p>
       <div class="card">
-        <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">We build your audience actively
-          — not just by posting and hoping. Every month, we run targeted outreach campaigns to the exact type of people
-          you want in your network.</p>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">We research and build a targeted list of <strong>1,000+ ICP-matched prospects</strong> every month — so you always know exactly who to reach out to for better reach within your ideal customer profile.</p>
         <div class="grid2" style="margin-top:0">
           <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px">
-            <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;color:var(--text)">1,000</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px">Targeted LinkedIn prospects per month</div>
+            <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;color:var(--text)">1,000+</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">ICP-matched prospects per month</div>
           </div>
           <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px">
-            <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;color:var(--text)">Auto</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px">Outreach runs in the background every day
-            </div>
+            <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;color:var(--text)">ICP</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Targeted for your exact ideal customer profile</div>
           </div>
         </div>
         <ul class="flist" style="margin-top:16px">
@@ -1462,19 +1472,30 @@
               <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
               <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
-            </svg> Automated connection requests to ICP-matched prospects</li>
+            </svg> Curated list of 1,000+ prospects matching your ICP every month</li>
           <li><svg class="icon-g" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
               <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
-            </svg> Personalised connection notes — not generic spam</li>
+            </svg> Filtered by industry, role, company size, and location</li>
           <li><svg class="icon-g" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
               <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
-            </svg> Follow-up sequences to warm connections into conversations</li>
+            </svg> Delivered ready-to-use — so you can focus on conversations, not searching</li>
         </ul>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <a href="https://docs.google.com/spreadsheets/d/1JkHqkY2Y_QsqWtumEK_o5AlqRpJ6145hnsFSSwOs6AM/edit?usp=sharing" target="_blank"
+            style="display:inline-flex;align-items:center;gap:10px;padding:11px 22px;background:rgba(33,51,127,0.08);color:var(--indigo);border:1.5px solid rgba(33,51,127,0.22);border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;letter-spacing:0.01em;"
+            onmouseover="this.style.background='rgba(33,51,127,0.14)';this.style.borderColor='rgba(33,51,127,0.4)';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(33,51,127,0.08)';this.style.borderColor='rgba(33,51,127,0.22)';this.style.transform='translateY(0)'">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            View Sample ICP Lead List &nbsp;→
+          </a>
+        </div>
       </div>
+
 
       <p class="sec-label">Strategy & Support</p>
       <div class="card">
@@ -1502,16 +1523,6 @@
         </ul>
       </div>
 
-      <div class="ai-highlight">
-        <div class="ai-icon">🤖</div>
-        <div>
-          <h3>Personal Brand AI Training — Included in Pro</h3>
-          <p>Over three months we learn your voice, opinions, experiences, communication style, and industry knowledge.
-            Then we train our AI on all of it. The result: <strong>an AI assistant that generates content in your exact
-              voice</strong> — forever. Existing content you've created is repurposed as training data too, so the AI
-            already knows what you've built.</p>
-        </div>
-      </div>
 
       <!-- Quick comparison table -->
       <p class="sec-label">Standard vs Pro — at a glance</p>
@@ -1570,13 +1581,9 @@
               <td class="no">—</td>
               <td class="yes">✓</td>
             </tr>
+
             <tr>
-              <td>1,000 Targeted Prospects / Month</td>
-              <td class="no">—</td>
-              <td class="yes">✓</td>
-            </tr>
-            <tr>
-              <td>Automated Outreach &amp; Follow-up</td>
+              <td>ICP Leads List (1,000+)</td>
               <td class="no">—</td>
               <td class="yes">✓</td>
             </tr>
@@ -1597,7 +1604,7 @@
             </tr>
             <tr>
               <td style="font-weight:700;color:var(--text)">Monthly Price</td>
-              <td class="val">$220 / $600 qtr</td>
+              <td class="val">$250 / $675 qtr</td>
               <td class="val" style="color:var(--indigo-lt)">$350 / $900 qtr</td>
             </tr>
           </tbody>
@@ -1606,163 +1613,14 @@
 
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:20px 0 60px">
         <button class="btn btn-solid">Start Growing with Pro — $350/mo</button>
-        <button class="btn btn-outline"
-          onclick="showPage('custom',document.querySelector('.nav-btn:nth-child(5)'))">Need something bigger? See Custom
-          →</button>
+
       </div>
     </div>
     <div class="page-footer">© 2025 LinkedIn Growth Co.</div>
   </div>
 
 
-  <!-- ════════════════════════════════════════════
-     PAGE 4 — CUSTOM PLAN
-═════════════════════════════════════════════ -->
-  <div class="page" id="page-custom">
-    <div class="wrap">
-      <div class="page-hero">
-        <div class="eyebrow"><span class="dot"></span>Custom Plan</div>
-        <h1>Built Around<br /><em>Your Exact Goals.</em></h1>
-        <p>For founders, executives, and agencies with requirements beyond Standard or Pro. We scope everything around
-          your business — volume, team, automation, and growth targets.</p>
-      </div>
 
-      <div class="price-banner card amber-glow" style="margin:0 0 40px">
-        <div>
-          <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;line-height:1.1">Pricing depends
-            on<br />scope &amp; requirements</div>
-          <p style="font-size:14px;color:var(--muted);margin-top:10px">Tell us what you're building toward. We'll put
-            together a plan and proposal within 48 hours.</p>
-        </div>
-        <div class="cta-wrap">
-          <button class="btn btn-amber" onclick="window.open('https://cal.com/punit-gupta-grdgmd/punit11?overlayCalendar=true','_blank')">Book a Discovery Call</button>
-          <button class="btn btn-ghost">Or send us a message →</button>
-        </div>
-      </div>
-
-      <p class="sec-label">What Custom Covers</p>
-      <div class="options-grid">
-        <div class="custom-option">
-          <div class="co-icon">📈</div>
-          <div>
-            <h4>Higher Content Volume</h4>
-            <p>More posts, more formats, more frequency — scaled to match your growth targets and audience size.</p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">🎬</div>
-          <div>
-            <h4>More AI Avatar Videos</h4>
-            <p>10, 20, or 30+ AI videos per month. We scale video production to match your content strategy.</p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">📬</div>
-          <div>
-            <h4>Done-For-You Outreach</h4>
-            <p>High-volume, personalised outreach campaigns — beyond the 1,000 prospects in Pro. We build your pipeline.
-            </p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">🏢</div>
-          <div>
-            <h4>Team Branding</h4>
-            <p>Brand multiple team members, executives, or co-founders simultaneously under a unified brand strategy.
-            </p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">🏗️</div>
-          <div>
-            <h4>Company Page Management</h4>
-            <p>Full LinkedIn company page management — content, design, growth, and engagement handled end-to-end.</p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">👤</div>
-          <div>
-            <h4>Founder + Company Content</h4>
-            <p>A combined strategy that builds both your personal brand and your company page, aligned and working
-              together.</p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">🤖</div>
-          <div>
-            <h4>Custom AI Automations</h4>
-            <p>Bespoke AI workflows built specifically for your business — beyond the standard engagement and outreach
-              systems.</p>
-          </div>
-        </div>
-        <div class="custom-option">
-          <div class="co-icon">📋</div>
-          <div>
-            <h4>Flexible Billing &amp; Contract Terms</h4>
-            <p>Custom invoicing cadence, payment structures, and contract lengths that work for your business model.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="ai-highlight">
-        <div class="ai-icon">🤖</div>
-        <div>
-          <h3>Personal Brand AI — Available in Custom Too</h3>
-          <p>The three-month AI training process is available in Custom plans. If you're branding multiple team members,
-            we can <strong>train separate AI assistants for each person</strong> — each one learning that individual's
-            unique voice, style, and knowledge base.</p>
-        </div>
-      </div>
-
-      <p class="sec-label">How the Custom Process Works</p>
-      <div class="card" style="padding:32px">
-        <div class="steps" style="gap:0">
-          <div class="step" style="padding:20px 0">
-            <div class="step-num"
-              style="background:rgba(10,10,10,.1);border-color:rgba(10,10,10,.3);color:var(--amber)">1</div>
-            <div class="step-body">
-              <h3>Discovery Call</h3>
-              <p>We talk through your goals, current situation, team size, content needs, and what success looks like
-                for you. No pitch — just understanding your business.</p>
-            </div>
-          </div>
-          <div class="step" style="padding:20px 0">
-            <div class="step-num"
-              style="background:rgba(10,10,10,.1);border-color:rgba(10,10,10,.3);color:var(--amber)">2</div>
-            <div class="step-body">
-              <h3>We Build a Proposal</h3>
-              <p>Within 48 hours we put together a custom scope with deliverables, timelines, team structure, and
-                pricing — everything in writing.</p>
-            </div>
-          </div>
-          <div class="step" style="padding:20px 0">
-            <div class="step-num"
-              style="background:rgba(10,10,10,.1);border-color:rgba(10,10,10,.3);color:var(--amber)">3</div>
-            <div class="step-body">
-              <h3>Review &amp; Align</h3>
-              <p>We walk through the proposal together, adjust anything that doesn't fit, and agree on the final plan.
-                No pressure, no urgency tactics.</p>
-            </div>
-          </div>
-          <div class="step" style="padding:20px 0;border-bottom:none">
-            <div class="step-num"
-              style="background:rgba(10,10,10,.1);border-color:rgba(10,10,10,.3);color:var(--amber)">4</div>
-            <div class="step-body">
-              <h3>We Start</h3>
-              <p>Onboarding begins, research kicks off, and your custom LinkedIn growth engine is underway.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:40px 0 60px">
-        <button class="btn btn-amber" style="font-size:16px;padding:16px 32px" onclick="window.open('https://cal.com/punit-gupta-grdgmd/punit11?overlayCalendar=true','_blank')">Book a Discovery Call</button>
-        <button class="btn btn-outline" onclick="showPage('pro',document.querySelector('.nav-btn:nth-child(4)'))">← Back
-          to Pro Plan</button>
-      </div>
-    </div>
-    <div class="page-footer">© 2025 LinkedIn Growth Co.</div>
-  </div>
 
   <!-- ════════════════════════════════════════════
      PAGE 5 — RESULTS
@@ -1789,10 +1647,10 @@
         .results-slider-track {
           display: flex;
           transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-          width: 600%;
+          width: 1000%;
         }
         .results-slide {
-          width: 16.666%;
+          width: 10%;
           flex-shrink: 0;
           display: flex;
           justify-content: center;
@@ -1890,6 +1748,18 @@
           <div class="results-slide">
             <img src="meme.webp" alt="Meme Post" />
           </div>
+          <div class="results-slide">
+            <img src="paidfree.webp" alt="Paid Free Post" />
+          </div>
+          <div class="results-slide">
+            <img src="hormazi.webp" alt="Hormazi Post" />
+          </div>
+          <div class="results-slide">
+            <img src="beforeafter.webp" alt="Before After Post" />
+          </div>
+          <div class="results-slide">
+            <img src="youtubelinkedinpost.webp" alt="YouTube LinkedIn Post" />
+          </div>
         </div>
 
         <div class="slider-dots">
@@ -1899,6 +1769,10 @@
           <div class="slider-dot" onclick="setResultsSlide(3)"></div>
           <div class="slider-dot" onclick="setResultsSlide(4)"></div>
           <div class="slider-dot" onclick="setResultsSlide(5)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(6)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(7)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(8)"></div>
+          <div class="slider-dot" onclick="setResultsSlide(9)"></div>
         </div>
       </div>
 
@@ -1907,7 +1781,7 @@
           let currentIdx = 0;
           const track = document.getElementById('resultsSliderTrack');
           const dots = document.querySelectorAll('.slider-dot');
-          const totalSlides = 6;
+          const totalSlides = 10;
           let autoSlideTimeout;
 
           function updateSlider(idx) {
@@ -1933,11 +1807,10 @@
           };
 
           function startTimer() {
-            let delay = currentIdx === 0 ? 3000 : 2000;
             autoSlideTimeout = setTimeout(() => {
               updateSlider(currentIdx + 1);
               startTimer();
-            }, delay);
+            }, 4000);
           }
 
           function resetTimer() {
