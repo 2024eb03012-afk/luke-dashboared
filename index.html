@@ -1851,50 +1851,30 @@
 
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:24px;align-items:start;">
 
-            <!-- Left Side: Interactive PDF Carousel Card -->
+            <!-- Left Side: Elfsight PDF Carousel Embed Card -->
             <div class="card" style="border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                 <div>
-                  <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:0;">PDF Carousel Document</h3>
-                  <p style="font-size:12px;color:var(--muted);margin-top:2px;">Swipe left &amp; right or click arrows</p>
+                  <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:0;">PDF Carousel Sample #1</h3>
+                  <p style="font-size:12px;color:var(--muted);margin-top:2px;">Interactive PDF viewer carousel</p>
                 </div>
-                <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">7 Slides</span>
+                <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">PDF Embed</span>
               </div>
-
-              <!-- Carousel Container -->
-              <div id="pdfCarouselWrapper" style="position:relative;border-radius:12px;overflow:hidden;background:#0D1B3A;box-shadow:0 8px 24px rgba(0,0,0,0.15);touch-action:pan-y;">
-                
-                <!-- Slide Track -->
-                <div id="pdfSlideTrack" style="display:flex;transition:transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);width:700%;">
-                  <!-- Canvases will be rendered here by PDF.js -->
-                  <div style="width:14.285%;padding:60px 20px;text-align:center;color:#F5EEE4;">Loading PDF slides...</div>
-                </div>
-
-                <!-- Navigation Arrow Left -->
-                <button id="pdfPrevBtn" onclick="swipePdfSlide(-1)" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(13,27,58,0.85);color:#fff;border:1.5px solid rgba(255,255,255,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:10;backdrop-filter:blur(4px);transition:all .2s;" onmouseover="this.style.background='var(--indigo)';this.style.transform='translateY(-50%) scale(1.08)'" onmouseout="this.style.background='rgba(13,27,58,0.85)';this.style.transform='translateY(-50%) scale(1)'">‹</button>
-
-                <!-- Navigation Arrow Right -->
-                <button id="pdfNextBtn" onclick="swipePdfSlide(1)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(13,27,58,0.85);color:#fff;border:1.5px solid rgba(255,255,255,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:10;backdrop-filter:blur(4px);transition:all .2s;" onmouseover="this.style.background='var(--indigo)';this.style.transform='translateY(-50%) scale(1.08)'" onmouseout="this.style.background='rgba(13,27,58,0.85)';this.style.transform='translateY(-50%) scale(1)'">›</button>
-
-                <!-- Counter Badge -->
-                <div id="pdfPageCounter" style="position:absolute;top:14px;right:14px;background:rgba(13,27,58,0.85);color:#F5EEE4;padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.05em;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);z-index:10;">1 / 7</div>
-              </div>
-
-              <!-- Carousel Dots -->
-              <div id="pdfDotsNav" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div>
+              <script src="https://elfsightcdn.com/platform.js" async></script>
+              <div class="elfsight-app-f15654a9-7770-4b34-9ce6-633937f2f9d2" data-elfsight-app-lazy></div>
             </div>
 
-            <!-- Right Side: Live LinkedIn Embedded Carousel Post Card -->
+            <!-- Right Side: LinkedIn Live Carousel Post Card -->
             <div class="card" style="border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                 <div>
-                  <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:0;">Live LinkedIn Post</h3>
-                  <p style="font-size:12px;color:var(--muted);margin-top:2px;">Interactive LinkedIn post embed</p>
+                  <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:0;">PDF Carousel Sample #2</h3>
+                  <p style="font-size:12px;color:var(--muted);margin-top:2px;">LinkedIn carousel post embed</p>
                 </div>
-                <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">LinkedIn Post</span>
+                <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">LinkedIn Carousel</span>
               </div>
               <div style="display:flex;justify-content:center;background:#0D1B3A;padding:16px;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
-                <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7481233498419290112?collapsed=1" height="520" width="504" frameborder="0" allowfullscreen="" title="Embedded post" style="max-width:100%;border-radius:8px;border:none;"></iframe>
+                <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7492147443736879104?compact=1" height="520" width="504" frameborder="0" allowfullscreen="" title="Embedded post" style="max-width:100%;border-radius:8px;border:none;"></iframe>
               </div>
             </div>
 
