@@ -1842,16 +1842,173 @@
         <p>This section is reserved for content samples and will be updated shortly.</p>
       </div>
 
-        <!-- Carousel PDF Embed Card -->
-        <div class="card" style="border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.04);">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
-            <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin:0;">LinkedIn Carousel PDF Post</h2>
-            <span style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:5px 12px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">📚 PDF Carousel</span>
+        <!-- Interactive PDF Carousel Card -->
+        <div class="card" style="border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin:0;">LinkedIn Carousel PDF Post</h2>
+              <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Swipe left &amp; right or click arrows to slide through pages</p>
+            </div>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:5px 12px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">📚 7-Slide Carousel</span>
           </div>
-          <!-- Elfsight PDF Embed | Untitled PDF Embed -->
-          <script src="https://elfsightcdn.com/platform.js" async></script>
-          <div class="elfsight-app-f15654a9-7770-4b34-9ce6-633937f2f9d2" data-elfsight-app-lazy></div>
+
+          <!-- Carousel Container -->
+          <div id="pdfCarouselWrapper" style="position:relative;border-radius:12px;overflow:hidden;background:#0D1B3A;box-shadow:0 8px 24px rgba(0,0,0,0.15);touch-action:pan-y;">
+            
+            <!-- Slide Track -->
+            <div id="pdfSlideTrack" style="display:flex;transition:transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);width:700%;">
+              <!-- Canvases will be rendered here by PDF.js -->
+              <div style="width:14.285%;padding:60px 20px;text-align:center;color:#F5EEE4;">Loading PDF slides...</div>
+            </div>
+
+            <!-- Navigation Arrow Left -->
+            <button id="pdfPrevBtn" onclick="swipePdfSlide(-1)" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(13,27,58,0.85);color:#fff;border:1.5px solid rgba(255,255,255,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:10;backdrop-filter:blur(4px);transition:all .2s;" onmouseover="this.style.background='var(--indigo)';this.style.transform='translateY(-50%) scale(1.08)'" onmouseout="this.style.background='rgba(13,27,58,0.85)';this.style.transform='translateY(-50%) scale(1)'">‹</button>
+
+            <!-- Navigation Arrow Right -->
+            <button id="pdfNextBtn" onclick="swipePdfSlide(1)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(13,27,58,0.85);color:#fff;border:1.5px solid rgba(255,255,255,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:10;backdrop-filter:blur(4px);transition:all .2s;" onmouseover="this.style.background='var(--indigo)';this.style.transform='translateY(-50%) scale(1.08)'" onmouseout="this.style.background='rgba(13,27,58,0.85)';this.style.transform='translateY(-50%) scale(1)'">›</button>
+
+            <!-- Counter Badge -->
+            <div id="pdfPageCounter" style="position:absolute;top:14px;right:14px;background:rgba(13,27,58,0.85);color:#F5EEE4;padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.05em;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);z-index:10;">1 / 7</div>
+          </div>
+
+          <!-- Carousel Dots -->
+          <div id="pdfDotsNav" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div>
         </div>
+
+        <!-- Include PDF.js Library & Carousel Controller Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+        <script>
+          (function() {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+            let pdfDoc = null;
+            let currentPdfIdx = 0;
+            let totalPdfPages = 0;
+            const pdfUrl = 'sample-carousel.pdf';
+
+            const track = document.getElementById('pdfSlideTrack');
+            const counter = document.getElementById('pdfPageCounter');
+            const dotsContainer = document.getElementById('pdfDotsNav');
+            const wrapper = document.getElementById('pdfCarouselWrapper');
+
+            // Load PDF document
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+              pdfDoc = pdf;
+              totalPdfPages = pdf.numPages;
+              track.style.width = `${totalPdfPages * 100}%`;
+              track.innerHTML = '';
+              dotsContainer.innerHTML = '';
+
+              // Render all pages as slides
+              for (let pageNum = 1; pageNum <= totalPdfPages; pageNum++) {
+                const slideDiv = document.createElement('div');
+                slideDiv.style.width = `${100 / totalPdfPages}%`;
+                slideDiv.style.flexShrink = '0';
+                slideDiv.style.display = 'flex';
+                slideDiv.style.justifyContent = 'center';
+                slideDiv.style.alignItems = 'center';
+                slideDiv.style.padding = '12px';
+                slideDiv.style.background = '#0D1B3A';
+
+                const canvas = document.createElement('canvas');
+                canvas.style.maxWidth = '100%';
+                canvas.style.maxHeight = '650px';
+                canvas.style.borderRadius = '8px';
+                canvas.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
+                slideDiv.appendChild(canvas);
+                track.appendChild(slideDiv);
+
+                // Render page to canvas
+                pdf.getPage(pageNum).then(page => {
+                  const viewport = page.getViewport({ scale: 1.5 });
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  const renderContext = {
+                    canvasContext: canvas.getContext('2d'),
+                    viewport: viewport
+                  };
+                  page.render(renderContext);
+                });
+
+                // Create dot
+                const dot = document.createElement('div');
+                dot.style.height = '8px';
+                dot.style.borderRadius = '100px';
+                dot.style.background = pageNum === 1 ? 'var(--navy)' : 'var(--border)';
+                dot.style.width = pageNum === 1 ? '24px' : '8px';
+                dot.style.cursor = 'pointer';
+                dot.style.transition = 'all 0.25s ease';
+                dot.onclick = () => goToPdfSlide(pageNum - 1);
+                dotsContainer.appendChild(dot);
+              }
+
+              updatePdfCarouselUI();
+            }).catch(err => {
+              console.error('PDF load error:', err);
+            });
+
+            window.swipePdfSlide = function(dir) {
+              if (totalPdfPages === 0) return;
+              currentPdfIdx = (currentPdfIdx + dir + totalPdfPages) % totalPdfPages;
+              updatePdfCarouselUI();
+            };
+
+            window.goToPdfSlide = function(idx) {
+              currentPdfIdx = idx;
+              updatePdfCarouselUI();
+            };
+
+            function updatePdfCarouselUI() {
+              if (totalPdfPages === 0) return;
+              track.style.transform = `translateX(-${currentPdfIdx * (100 / totalPdfPages)}%)`;
+              counter.textContent = `${currentPdfIdx + 1} / ${totalPdfPages}`;
+
+              const dots = dotsContainer.children;
+              for (let i = 0; i < dots.length; i++) {
+                if (i === currentPdfIdx) {
+                  dots[i].style.background = 'var(--navy)';
+                  dots[i].style.width = '24px';
+                } else {
+                  dots[i].style.background = 'var(--border)';
+                  dots[i].style.width = '8px';
+                }
+              }
+            }
+
+            // Touch / Mouse Swipe support
+            let startX = 0;
+            let isDragging = false;
+
+            wrapper.addEventListener('touchstart', e => {
+              startX = e.touches[0].clientX;
+              isDragging = true;
+            }, { passive: true });
+
+            wrapper.addEventListener('touchend', e => {
+              if (!isDragging) return;
+              let endX = e.changedTouches[0].clientX;
+              let diffX = startX - endX;
+              if (Math.abs(diffX) > 40) {
+                swipePdfSlide(diffX > 0 ? 1 : -1);
+              }
+              isDragging = false;
+            }, { passive: true });
+
+            wrapper.addEventListener('mousedown', e => {
+              startX = e.clientX;
+              isDragging = true;
+            });
+
+            wrapper.addEventListener('mouseup', e => {
+              if (!isDragging) return;
+              let diffX = startX - e.clientX;
+              if (Math.abs(diffX) > 40) {
+                swipePdfSlide(diffX > 0 ? 1 : -1);
+              }
+              isDragging = false;
+            });
+          })();
+        </script>
 
         <!-- Video 1: Business Explainer -->
         <div class="card" style="border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.04);">
