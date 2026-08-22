@@ -73,6 +73,7 @@
       margin-right: auto;
       white-space: nowrap;
       letter-spacing: -0.02em;
+      flex-shrink: 0;
     }
 
     .topnav .logo span {
@@ -897,7 +898,9 @@
 
   <!-- TOP NAV -->
   <nav class="topnav">
-    <div class="logo">Luke</div>
+    <a href="#" onclick="showPage('overview',document.querySelector('.nav-btn.active'));return false;" style="margin-right:auto;display:flex;align-items:center;flex-shrink:0">
+      <img src="logo.svg" alt="Luke" style="height:32px;width:auto;display:block;" />
+    </a>
     <button class="nav-btn active" onclick="showPage('overview',this)">What We Do</button>
     <button class="nav-btn" onclick="showPage('standard',this)">Standard</button>
     <button class="nav-btn" onclick="showPage('pro',this)">Pro</button>
