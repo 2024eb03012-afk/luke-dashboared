@@ -902,9 +902,9 @@
       <img src="logo.png" alt="Luke" style="height:64px;width:auto;display:block;" />
     </a>
     <button class="nav-btn active" onclick="showPage('overview',this)">What We Do</button>
+    <button class="nav-btn" onclick="showPage('samples',this)">Content Samples</button>
     <button class="nav-btn" onclick="showPage('standard',this)">Standard</button>
     <button class="nav-btn" onclick="showPage('pro',this)">Pro</button>
-
     <button class="nav-btn" onclick="showPage('results',this)">Results</button>
     <button class="nav-btn" onclick="showPage('diagnosis',this)">🩺 Diagnosis</button>
   </nav>
@@ -1830,6 +1830,155 @@
   </div>
 
 
+
+  <!-- ════════════════════════════════════════════
+     PAGE — CONTENT SAMPLES
+═════════════════════════════════════════════ -->
+  <div class="page" id="page-samples">
+    <div class="wrap-wide">
+      <div class="page-hero">
+        <div class="eyebrow"><span class="dot"></span>Handcrafted Content</div>
+        <h1>Content <em>Samples &amp; Frameworks</em></h1>
+        <p>A look at the high-converting LinkedIn post formats, carousel structures, and case studies built for founder authority and inbound leads.</p>
+      </div>
+
+      <!-- Sample Category Filter -->
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 0 32px;" id="sampleFilters">
+        <button class="btn-outline active-filter" onclick="filterSamples('all', this)" style="padding:7px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;background:var(--navy);color:#F5EEE4;border:1.5px solid var(--navy);">All Samples</button>
+        <button class="btn-outline" onclick="filterSamples('tofu', this)" style="padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--navy);border:1.5px solid var(--border);">TOFU · Authority</button>
+        <button class="btn-outline" onclick="filterSamples('mofu', this)" style="padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--navy);border:1.5px solid var(--border);">MOFU · Frameworks</button>
+        <button class="btn-outline" onclick="filterSamples('bofu', this)" style="padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--navy);border:1.5px solid var(--border);">BOFU · Case Studies</button>
+        <button class="btn-outline" onclick="filterSamples('video', this)" style="padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--navy);border:1.5px solid var(--border);">AI Video Assets</button>
+      </div>
+
+      <!-- Samples Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:24px;margin-bottom:60px;">
+        
+        <!-- SAMPLE 1: TOFU Viral Hook -->
+        <div class="card sample-card" data-cat="tofu" style="display:flex;flex-direction:column;justify-content:space-between;border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;transition:transform .2s, border-color .2s;">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">TOFU · Authority Hook</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Text Post</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.35;">"Why 90% of B2B founders fail to generate pipeline from LinkedIn in 2025."</h3>
+            <div style="background:var(--bg);border-left:3px solid var(--indigo);padding:14px;border-radius:0 10px 10px 0;font-size:13px;line-height:1.6;color:var(--navy);margin-bottom:16px;font-family:'Inter',sans-serif;">
+              <p style="margin-bottom:8px;">Most founders post like a corporate PR department: neutral, safe, and completely forgettable.</p>
+              <p style="margin-bottom:8px;">Here are 4 counter-intuitive shifts we used to generate 25+ qualified calls in 90 days:</p>
+              <p style="color:var(--muted);font-style:italic;">1. Trade generic wisdom for specific operational wins...</p>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);">
+            <span>🎯 <strong>Goal:</strong> High reach &amp; brand positioning</span>
+            <span style="color:var(--indigo);font-weight:700;">4.8% CTR</span>
+          </div>
+        </div>
+
+        <!-- SAMPLE 2: MOFU Carousel Framework -->
+        <div class="card sample-card" data-cat="mofu" style="display:flex;flex-direction:column;justify-content:space-between;border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;transition:transform .2s, border-color .2s;">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#4D67B6;background:rgba(77,103,182,0.1);padding:4px 10px;border-radius:100px;border:1px solid rgba(77,103,182,0.28);">MOFU · Visual Carousel</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Document/PDF</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.35;">"The 5-Step Executive Branding Blueprint (10-Slide Slide Deck)"</h3>
+            <div style="background:var(--navy);color:#F5EEE4;padding:16px;border-radius:12px;margin-bottom:16px;">
+              <div style="font-size:11px;color:var(--oat);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:6px;">Slide 1 Preview</div>
+              <div style="font-size:16px;font-weight:800;line-height:1.3;margin-bottom:6px;">How to Turn LinkedIn into a Predictable Lead Engine</div>
+              <div style="font-size:12px;color:var(--oat);">Swipe for step-by-step breakdown ➔</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);">
+            <span>📚 <strong>Goal:</strong> High saves &amp; deep authority</span>
+            <span style="color:var(--indigo);font-weight:700;">85% Completion</span>
+          </div>
+        </div>
+
+        <!-- SAMPLE 3: BOFU Case Study -->
+        <div class="card sample-card" data-cat="bofu" style="display:flex;flex-direction:column;justify-content:space-between;border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;transition:transform .2s, border-color .2s;">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(33,51,127,0.08);padding:4px 10px;border-radius:100px;border:1px solid rgba(33,51,127,0.2);">BOFU · Inbound Conversion</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Story &amp; Metric</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.35;">"From 0 inbound DMs to 14 client calls: A Fintech CEO Breakdown"</h3>
+            <div style="background:var(--bg);padding:14px;border-radius:10px;font-size:13px;line-height:1.6;color:var(--navy);margin-bottom:16px;">
+              <p style="font-weight:700;margin-bottom:6px;">Result in 60 days:</p>
+              <ul style="list-style:none;padding-left:0;font-size:12.5px;color:var(--muted);">
+                <li style="margin-bottom:4px;">✅ 14 high-intent discovery calls booked</li>
+                <li style="margin-bottom:4px;">✅ $45k closed pipeline revenue</li>
+                <li>✅ 60k+ organic content impressions</li>
+              </ul>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);">
+            <span>🚀 <strong>Goal:</strong> Direct lead generation &amp; DMs</span>
+            <span style="color:var(--indigo);font-weight:700;">14 Calls Booked</span>
+          </div>
+        </div>
+
+        <!-- SAMPLE 4: AI Video Avatar Teaser -->
+        <div class="card sample-card" data-cat="video" style="display:flex;flex-direction:column;justify-content:space-between;border-radius:16px;background:var(--surface);border:1px solid var(--border);padding:24px;transition:transform .2s, border-color .2s;">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#4D67B6;background:rgba(77,103,182,0.1);padding:4px 10px;border-radius:100px;border:1px solid rgba(77,103,182,0.28);">AI Video Asset</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">60-Sec Short Video</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.35;">"Hyper-Realistic Founder Avatar: 60s Strategic Video Post"</h3>
+            <div style="background:var(--navy);color:#F5EEE4;padding:16px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;gap:14px;">
+              <div style="width:44px;height:44px;border-radius:50%;background:var(--indigo);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">▶</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;">Trained on Founder's Voice &amp; Likeness</div>
+                <div style="font-size:11px;color:var(--oat);margin-top:2px;">Custom animated captions + dynamic graphics</div>
+              </div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);">
+            <span>🎬 <strong>Goal:</strong> High engagement &amp; video retention</span>
+            <span style="color:var(--indigo);font-weight:700;">Pro Feature</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sample CTA Banner -->
+      <div class="price-banner card" style="margin:0 0 40px;background:linear-gradient(135deg, var(--navy), #16275a);">
+        <div>
+          <div style="font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:#F5EEE4;line-height:1.2">Want custom content samples tailored to your exact niche?</div>
+          <p style="font-size:14px;color:var(--oat);margin-top:8px">Book a 15-minute discovery chat and we'll audit your current profile and content strategy.</p>
+        </div>
+        <div class="cta-wrap">
+          <button class="btn btn-amber" onclick="window.open('https://cal.com/punit-gupta-grdgmd/punit11?overlayCalendar=true','_blank')">Book a Discovery Call</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">© 2025 LinkedIn Growth Co.</div>
+  </div>
+
+  <script>
+    function filterSamples(cat, btn) {
+      const cards = document.querySelectorAll('.sample-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      const filterBtns = document.querySelectorAll('#sampleFilters button');
+      filterBtns.forEach(b => {
+        b.style.background = 'var(--surface)';
+        b.style.color = 'var(--navy)';
+        b.style.borderColor = 'var(--border)';
+      });
+      if (btn) {
+        btn.style.background = 'var(--navy)';
+        btn.style.color = '#F5EEE4';
+        btn.style.borderColor = 'var(--navy)';
+      }
+    }
+  </script>
 
 <!-- ════════════════════════════════════════════
      PAGE 6 — DIAGNOSIS
